@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>AES - Device settings</title><link rel="stylesheet" type="text/css" href="style/style.css" />
+<script language="javascript">
+  window.history.forward(1);
+  var macList = '<!--#maclist-->';
+  var macArray = macList.split(',');
+  function fillMacList(){
+      if(macList.length > 0 && macArray.length > 0){
+          document.getElementById('mac_list').innerHTML = "<strong>MAC List:</strong>";
+        for(var key in macArray){
+            document.getElementById('mac_list').innerHTML += macArray[key]+"<br />";
+        }
+      } else {
+          document.getElementById('mac_list').innerHTML = "";
+      }
+  }
+</script></head><body onload="fillMacList()">
+<div id="content">
+<h1>Device settings</h1>
+<div class="channel">
+    <h3>General</h3>
+    <div>
+        <form method="post" action="settings.cgi">
+            <strong>DHCP</strong>
+            <input type="radio" name="dhcp" id="dhcp_true" value="true" /><label for="dhcp_true">enabled</label> <input type="radio" name="dhcp" id="dhcp_false" value="false" checked/><label for="dhcp_false">disabled</label><br />
+            <strong>MAC filter</strong>
+            <input type="radio" name="mf" id="mf_true" value="true" /><label for="mf_true">enabled</label> <input type="radio" name="mf" id="mf_false" value="false" checked/><label for="mf_false">disabled</label><br />
+            <strong>Static IP</strong>
+            <input type="text" maxlength="3" name="ip1" value="192" style="width:30px" /> . <input type="text" value="168" maxlength="3" style="width:30px" name="ip2" /> . <input type="text" value="1" maxlength="3" style="width:30px" name="ip3" /> . <input style="width:30px" type="text" maxlength="3" value="64" name="ip4" />
+            <strong>Netmask</strong>
+            <input type="text" maxlength="3" name="nm1" value="255" style="width:30px" /> . <input type="text" value="255" maxlength="3" style="width:30px" name="nm2" /> . <input type="text" value="255" maxlength="3" style="width:30px" name="nm3" /> . <input style="width:30px" type="text" maxlength="3" value="0" name="nm4" />
+            <br />
+            <br />
+            <input type="submit" value="Save device settings" class="save" />
+        </form>
+    </div>
+    <br /><br /><br />
+    <h3>MAC filter - allowed MACs</h3>
+    <div>
+    <div id="mac_list" class="fleft">
+    </div>
+    <div class="fleft">
+        <form method="post" action="mac.cgi">
+            <input type="text" maxlength="2" name="mac1" value="" style="width:30px" /> : <input type="text" maxlength="2" name="mac2" value="" style="width:30px" /> : <input type="text" maxlength="2" name="mac3" value="" style="width:30px" /> : <input type="text" maxlength="2" name="mac4" value="" style="width:30px" /> : <input type="text" maxlength="2" name="mac5" value="" style="width:30px" /> :  <input type="text" maxlength="2" name="mac6" value="" style="width:30px" />
+            <input type="submit" value="add MAC to list" class="save" />
+        </form>
+        <form method="post" action="clearmac.cgi">
+            <input type="submit" value="clear MAC list" class="save" />
+        </form>
+    </div>
+    </div>
+</div>
+</div>
+<div id="logo">LVR</div>
+<ul id="menu">
+<li><a href="index.shtml">Channel settings</a></li>
+<li><a href="settings.shtml" class="last">Device settings</a></li>
+</ul>
+<iframe src="status.shtml" id="status_frame"></iframe>
+</body></html>

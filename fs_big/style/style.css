@@ -1,0 +1,156 @@
+html
+{ height: 100%;}
+*
+{ margin: 0;
+  padding: 0;}
+body
+{ font: normal 11px 'trebuchet ms', arial, sans-serif;
+  background: #575f23;
+  color: #5D5D5D;}
+p
+{ padding: 0 0 20px 0;
+  line-height: 1.7em;}
+img
+{ border: 0;}
+h1 
+{ font: bold 45px arial, sans-serif;
+  color: #575f23;
+  margin: 18px 0 20px 0;}
+a
+{ outline: none;
+  text-decoration: none;
+  color: #5D5D5D;}
+a:hover
+{ 
+    color: #006600;}
+#content{
+    background: #fff url('header.png') repeat-x top left;
+    padding:135px 40px;
+}
+body.status{
+    background: #575f23 url('footer.png') repeat-x top left;
+}
+div.st{
+    margin:40px 0 0 20px;
+}
+#status_frame{
+    overflow-y: hidden;
+    height:120px;
+    bottom:0;
+    left:0;
+    width:100%;
+    border:0;
+}
+#logo{
+    width:150px;
+    height:75px;
+    background: url('lvr.png') no-repeat center center;
+    position:absolute;
+    right:15px;
+    top:0;
+}
+#status_table{
+    color:#fff;
+    border:0;
+    width:100%;
+}
+a.clear_status{
+    color:#fff;
+    text-transform: uppercase;
+    font-size:10px;
+}
+ul#menu{
+    position:absolute;
+    top:75px;
+    left:20px;
+    list-style-type: none;
+}
+ul#menu li{
+    float:left;
+}
+ul#menu li a{
+    font-size: 11px;
+    color:#fff;
+    padding:4px 20px;
+    border-right:1px solid #575f23;
+    font-weight: bold;
+}
+ul#menu li a:hover{
+    border-bottom:1px solid #9ca65b;
+}
+ul#menu li a.last{
+    border-right:none;
+}
+ul#menu li a:hover, a.clear_status:hover{
+    color:#deff00;
+}
+.fleft{
+    float:left;
+}
+.clear{
+    clear:both;
+    height:0;
+}
+h2{
+    text-transform: uppercase;
+    color:#fff;
+    font-size:19px;
+    padding-bottom:30px;
+}
+.channel{
+    margin:5px;
+}
+.channel div{
+    padding-left:20px;
+}
+.channel h3{
+    margin-bottom:15px;
+    font-size: 17px;
+}
+.channel strong{
+    margin:15px 0 5px 0;
+    display:block;
+}
+input[type=text]{
+    border: 1px solid #575f23;
+    padding:1px;
+    color:#454545;
+}
+input.save{
+    margin-top:15px;
+    display:block;
+    border:1px solid #d00;
+    font-size: 12px;
+    font-weight: bold;
+    padding:3px 6px;
+    background-color:#c44;
+    color:#fff;
+    cursor:hand;
+    cursor:pointer;
+}
+input.save:hover{
+    background-color: #d00;
+}
+label{
+    padding:3px;
+}
+.channel_sel{
+    margin:0 0 20px 5px;
+    font-size:12px;
+}
+.channel_sel a{
+    border:1px solid #ccc;
+    background-color:#eee;
+    padding:2px 4px;
+    margin:0 2px;
+}
+.channel_sel a:hover{
+    background-color:#ddd;
+}
+.channel_sel a.active{
+    border:1px solid #777;
+}
+p{
+    margin:0 0 5px 0;
+    padding:0;
+}

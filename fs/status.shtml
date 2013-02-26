@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html><head><meta http-equiv="refresh" content="5"><meta http-equiv="content-type" content="text/html; charset=utf-8"><link rel="stylesheet" type="text/css" href="style/style.css"></head><body class="status">
+<script language="javascript">
+  window.history.forward(1);
+</script>
+<div class="st">
+<div class="fleft" style="width:200px">
+<h2>Status</h2>
+<a href="clear.cgi" class="clear_status">Clear status</a>
+</div>
+<div class="fleft" style="width:600px">
+<table id="status_table">
+<tr><td>Channel 1</td><td><!--#ch1status--></td><td>Channel 5</td><td><!--#ch5status--></td></tr>
+<tr><td>Channel 2</td><td><!--#ch2status--></td><td>Channel 6</td><td><!--#ch6status--></td></tr>
+<tr><td>Channel 3</td><td><!--#ch3status--></td><td>Channel 7</td><td><!--#ch7status--></td></tr>
+<tr><td>Channel 4</td><td><!--#ch4status--></td><td>Channel 8</td><td><!--#ch8status--></td></tr>
+</table>
+</div>
+<div class="clear"></div>
+</div>
+</body></html>

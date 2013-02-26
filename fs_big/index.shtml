@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>AES</title><link rel="stylesheet" type="text/css" href="style/style.css" />
+<script language="javascript">
+  window.history.forward(1);
+  var currentTab = 1;
+  function showTab(i){
+      document.getElementById('channel_'+currentTab).style.display = 'none';
+      document.getElementById('chh_'+currentTab).className = " ";
+      document.getElementById('channel_'+i).style.display = 'block';
+      document.getElementById('chh_'+i).className = "active";
+      currentTab = i;
+      return false;
+  }
+</script></head><body>
+<div id="content">
+<h1>Channel settings</h1>
+<form method="post" action="channelsettings.cgi">
+    <div class="channel_sel">Choose channel: <a href="#" id="chh_1" class="active" onclick="return showTab(1);">1</a> <a href="#" id="chh_2" onclick="return showTab(2);">2</a> <a href="#" id="chh_3" onclick="return showTab(3);">3</a> <a href="#" id="chh_4" onclick="return showTab(4);">4</a> <a href="#" id="chh_5" onclick="return showTab(5);">5</a> <a href="#" id="chh_6" onclick="return showTab(6);">6</a> <a href="#" id="chh_7" onclick="return showTab(7);">7</a> <a href="#" id="chh_8" onclick="return showTab(8);">8</a> </div>
+<div id="channel_1" class="channel">
+    <h3>Channel 1</h3>
+    <div>
+    <strong>Channel</strong> <input type="radio" name="ch1en" id="ch1enabled_true" value="true" checked/><label for="ch1enabled_true">enabled</label> <input type="radio" name="ch1en" id="ch1enabled_false" value="false" /><label for="ch1enabled_false">disabled</label><br />
+    <strong>Baud rate</strong> <input type="radio" name="ch1br" value="50" id="ch1br_50" /> <label for="ch1br_50">50</label> <input type="radio" name="ch1br" value="78" id="ch1br_78" /> <label for="ch1br_78">78</label> <input type="radio" name="ch1br" value="110" id="ch1br_110" /> <label for="ch1br_110">110</label> <input type="radio" name="ch1br" value="150" id="ch1br_150" /> <label for="ch1br_150">150</label> 
+    <input type="radio" name="ch1br" value="300" id="ch1br_300" /> <label for="ch1br_300">300</label> <input type="radio" name="ch1br" value="600" id="ch1br_600" /> <label for="ch1br_600">600</label> <input type="radio" name="ch1br" value="1200" id="ch1br_1200" /> <label for="ch1br_1200">1 200</label> <input type="radio" name="ch1br" value="2400" id="ch1br_2400" /> <label for="ch1br_2400">2 400</label> 
+    <input type="radio" name="ch1br" value="4800" id="ch1br_4800" /> <label for="ch1br_4800">4 800</label> <input type="radio" name="ch1br" value="9600" id="ch1br_9600" checked/> <label for="ch1br_9600">9600</label> <input type="radio" name="ch1br" value="19200" id="ch1br_19200" /> <label for="ch1br_19200">19 200</label> <input type="radio" name="ch1br" value="28800" id="ch1br_28800" /> <label for="ch1br_28800">28 800</label> <input type="radio" name="ch1br" value="38400" id="ch1br_38400" /> <label for="ch1br_38400">38 400</label> 
+    <input type="radio" name="ch1br" value="57600" id="ch1br_57600" /> <label for="ch1br_57600">57 600</label> <input type="radio" name="ch1br" value="115200" id="ch1br_115200" /> <label for="ch1br_115200">115 200</label> <br />
+    <strong>Frame settings</strong>
+    <strong>Data bits</strong>
+    <input type="radio" name="ch1db" id="ch1db_5" value="5"/><label for="ch1db_5">5</label>
+    <input type="radio" name="ch1db" id="ch1db_6" value="6"/><label for="ch1db_6">6</label>
+    <input type="radio" name="ch1db" id="ch1db_7" value="7"/><label for="ch1db_7">7</label>
+    <input type="radio" name="ch1db" id="ch1db_8" value="8" checked/><label for="ch1db_8">8</label>
+    <strong>Stop bits</strong>
+    <input type="radio" name="ch1sb" id="ch1sb_0" value="0" checked/><label for="ch1sb_0">1</label>
+    <input type="radio" name="ch1sb" id="ch1sb_1" value="1"/><label for="ch1sb_1">1.5</label>
+    <input type="radio" name="ch1sb" id="ch1sb_2" value="2"/><label for="ch1sb_2">2</label>
+    <strong>Parity</strong>
+    <input type="radio" name="ch1pa" id="ch1pa_0" value="0" checked/><label for="ch1pa_0">off</label>
+    <input type="radio" name="ch1pa" id="ch1pa_1" value="1"/><label for="ch1pa_1">even</label>
+    <input type="radio" name="ch1pa" id="ch1pa_2" value="2"/><label for="ch1pa_2">odd</label><br /><br /><br />
+    <input type="checkbox" name="all" value="1" id="allch" /> <label for="allch">Apply this settings to all channels</label>
+    
+    </div>
+</div>
+<div class="channel" id="channel_2" style="display:none">
+    <h3>Channel 2</h3>
+    <div>
+    <strong>Channel</strong> <input type="radio" name="ch2en" id="ch2enabled_true" value="true" checked/><label for="ch2enabled_true">enabled</label> <input type="radio" name="ch2en" id="ch2enabled_false" value="false" /><label for="ch2enabled_false">disabled</label><br />
+    <strong>Baud rate</strong> <input type="radio" name="ch2br" value="50" id="ch2br_50" /> <label for="ch2br_50">50</label> <input type="radio" name="ch2br" value="78" id="ch2br_78" /> <label for="ch2br_78">78</label> <input type="radio" name="ch2br" value="110" id="ch2br_110" /> <label for="ch2br_110">110</label> <input type="radio" name="ch2br" value="150" id="ch2br_150" /> <label for="ch2br_150">150</label> 
+    <input type="radio" name="ch2br" value="300" id="ch2br_300" /> <label for="ch2br_300">300</label> <input type="radio" name="ch2br" value="600" id="ch2br_600" /> <label for="ch2br_600">600</label> <input type="radio" name="ch2br" value="1200" id="ch2br_1200" /> <label for="ch2br_1200">1 200</label> <input type="radio" name="ch2br" value="2400" id="ch2br_2400" /> <label for="ch2br_2400">2 400</label> 
+    <input type="radio" name="ch2br" value="4800" id="ch2br_4800" /> <label for="ch2br_4800">4 800</label> <input type="radio" name="ch2br" value="9600" id="ch2br_9600" checked/> <label for="ch2br_9600">9600</label> <input type="radio" name="ch2br" value="19200" id="ch2br_19200" /> <label for="ch2br_19200">19 200</label> <input type="radio" name="ch2br" value="28800" id="ch2br_28800" /> <label for="ch2br_28800">28 800</label> <input type="radio" name="ch2br" value="38400" id="ch2br_38400" /> <label for="ch2br_38400">38 400</label> 
+    <input type="radio" name="ch2br" value="57600" id="ch2br_57600" /> <label for="ch2br_57600">57 600</label> <input type="radio" name="ch2br" value="115200" id="ch2br_115200" /> <label for="ch2br_115200">115 200</label> <br />
+    <strong>Frame settings</strong>
+    <strong>Data bits</strong>
+    <input type="radio" name="ch2db" id="ch2db_5" value="5"/><label for="ch2db_5">5</label>
+    <input type="radio" name="ch2db" id="ch2db_6" value="6"/><label for="ch2db_6">6</label>
+    <input type="radio" name="ch2db" id="ch2db_7" value="7"/><label for="ch2db_7">7</label>
+    <input type="radio" name="ch2db" id="ch2db_8" value="8" checked/><label for="ch2db_8">8</label>
+    <strong>Stop bits</strong>
+    <input type="radio" name="ch2sb" id="ch2sb_0" value="0" checked/><label for="ch2sb_0">1</label>
+    <input type="radio" name="ch2sb" id="ch2sb_1" value="1"/><label for="ch2sb_1">1.5</label>
+    <input type="radio" name="ch2sb" id="ch2sb_2" value="2"/><label for="ch2sb_2">2</label>
+    <strong>Parity</strong>
+    <input type="radio" name="ch2pa" id="ch2pa_0" value="0" checked/><label for="ch2pa_0">off</label>
+    <input type="radio" name="ch2pa" id="ch2pa_1" value="1"/><label for="ch2pa_1">even</label>
+    <input type="radio" name="ch2pa" id="ch2pa_2" value="2"/><label for="ch2pa_2">odd</label>
+    </div>
+</div>
+<div class="channel" id="channel_3" style="display:none">
+    <h3>Channel 3</h3>
+    <div>
+    <strong>Channel</strong> <input type="radio" name="ch3en" id="ch3enabled_true" value="true" checked/><label for="ch3enabled_true">enabled</label> <input type="radio" name="ch3en" id="ch3enabled_false" value="false" /><label for="ch3enabled_false">disabled</label><br />
+    <strong>Baud rate</strong> <input type="radio" name="ch3br" value="50" id="ch3br_50" /> <label for="ch3br_50">50</label> <input type="radio" name="ch3br" value="78" id="ch3br_78" /> <label for="ch3br_78">78</label> <input type="radio" name="ch3br" value="110" id="ch3br_110" /> <label for="ch3br_110">110</label> <input type="radio" name="ch3br" value="150" id="ch3br_150" /> <label for="ch3br_150">150</label> 
+    <input type="radio" name="ch3br" value="300" id="ch3br_300" /> <label for="ch3br_300">300</label> <input type="radio" name="ch3br" value="600" id="ch3br_600" /> <label for="ch3br_600">600</label> <input type="radio" name="ch3br" value="1200" id="ch3br_1200" /> <label for="ch3br_1200">1 200</label> <input type="radio" name="ch3br" value="2400" id="ch3br_2400" /> <label for="ch3br_2400">2 400</label> 
+    <input type="radio" name="ch3br" value="4800" id="ch3br_4800" /> <label for="ch3br_4800">4 800</label> <input type="radio" name="ch3br" value="9600" id="ch3br_9600" checked/> <label for="ch3br_9600">9600</label> <input type="radio" name="ch3br" value="19200" id="ch3br_19200" /> <label for="ch3br_19200">19 200</label> <input type="radio" name="ch3br" value="28800" id="ch3br_28800" /> <label for="ch3br_28800">28 800</label> <input type="radio" name="ch3br" value="38400" id="ch3br_38400" /> <label for="ch3br_38400">38 400</label> 
+    <input type="radio" name="ch3br" value="57600" id="ch3br_57600" /> <label for="ch3br_57600">57 600</label> <input type="radio" name="ch3br" value="115200" id="ch3br_115200" /> <label for="ch3br_115200">115 200</label> <br />
+    <strong>Frame settings</strong>
+    <strong>Data bits</strong>
+    <input type="radio" name="ch3db" id="ch3db_5" value="5"/><label for="ch3db_5">5</label>
+    <input type="radio" name="ch3db" id="ch3db_6" value="6"/><label for="ch3db_6">6</label>
+    <input type="radio" name="ch3db" id="ch3db_7" value="7"/><label for="ch3db_7">7</label>
+    <input type="radio" name="ch3db" id="ch3db_8" value="8" checked/><label for="ch3db_8">8</label>
+    <strong>Stop bits</strong>
+    <input type="radio" name="ch3sb" id="ch3sb_0" value="0" checked/><label for="ch3sb_0">1</label>
+    <input type="radio" name="ch3sb" id="ch3sb_1" value="1"/><label for="ch3sb_1">1.5</label>
+    <input type="radio" name="ch3sb" id="ch3sb_2" value="2"/><label for="ch3sb_2">2</label>
+    <strong>Parity</strong>
+    <input type="radio" name="ch3pa" id="ch3pa_0" value="0" checked/><label for="ch3pa_0">off</label>
+    <input type="radio" name="ch3pa" id="ch3pa_1" value="1"/><label for="ch3pa_1">even</label>
+    <input type="radio" name="ch3pa" id="ch3pa_2" value="2"/><label for="ch3pa_2">odd</label>
+    </div>
+</div>
+<div class="channel" id="channel_4" style="display:none">
+    <h3>Channel 4</h3>
+    <div>
+    <strong>Channel</strong> <input type="radio" name="ch4en" id="ch4enabled_true" value="true" checked/><label for="ch4enabled_true">enabled</label> <input type="radio" name="ch4en" id="ch4enabled_false" value="false" /><label for="ch4enabled_false">disabled</label><br />
+    <strong>Baud rate</strong> <input type="radio" name="ch4br" value="50" id="ch4br_50" /> <label for="ch4br_50">50</label> <input type="radio" name="ch4br" value="78" id="ch4br_78" /> <label for="ch4br_78">78</label> <input type="radio" name="ch4br" value="110" id="ch4br_110" /> <label for="ch4br_110">110</label> <input type="radio" name="ch4br" value="150" id="ch4br_150" /> <label for="ch4br_150">150</label> 
+    <input type="radio" name="ch4br" value="300" id="ch4br_300" /> <label for="ch4br_300">300</label> <input type="radio" name="ch4br" value="600" id="ch4br_600" /> <label for="ch4br_600">600</label> <input type="radio" name="ch4br" value="1200" id="ch4br_1200" /> <label for="ch4br_1200">1 200</label> <input type="radio" name="ch4br" value="2400" id="ch4br_2400" /> <label for="ch4br_2400">2 400</label> 
+    <input type="radio" name="ch4br" value="4800" id="ch4br_4800" /> <label for="ch4br_4800">4 800</label> <input type="radio" name="ch4br" value="9600" id="ch4br_9600" checked/> <label for="ch4br_9600">9600</label> <input type="radio" name="ch4br" value="19200" id="ch4br_19200" /> <label for="ch4br_19200">19 200</label> <input type="radio" name="ch4br" value="28800" id="ch4br_28800" /> <label for="ch4br_28800">28 800</label> <input type="radio" name="ch4br" value="38400" id="ch4br_38400" /> <label for="ch4br_38400">38 400</label> 
+    <input type="radio" name="ch4br" value="57600" id="ch4br_57600" /> <label for="ch4br_57600">57 600</label> <input type="radio" name="ch4br" value="115200" id="ch4br_115200" /> <label for="ch4br_115200">115 200</label> <br />
+    <strong>Frame settings</strong>
+    <strong>Data bits</strong>
+    <input type="radio" name="ch4db" id="ch4db_5" value="5"/><label for="ch4db_5">5</label>
+    <input type="radio" name="ch4db" id="ch4db_6" value="6"/><label for="ch4db_6">6</label>
+    <input type="radio" name="ch4db" id="ch4db_7" value="7"/><label for="ch4db_7">7</label>
+    <input type="radio" name="ch4db" id="ch4db_8" value="8" checked/><label for="ch4db_8">8</label>
+    <strong>Stop bits</strong>
+    <input type="radio" name="ch4sb" id="ch4sb_0" value="0" checked/><label for="ch4sb_0">1</label>
+    <input type="radio" name="ch4sb" id="ch4sb_1" value="1"/><label for="ch4sb_1">1.5</label>
+    <input type="radio" name="ch4sb" id="ch4sb_2" value="2"/><label for="ch4sb_2">2</label>
+    <strong>Parity</strong>
+    <input type="radio" name="ch4pa" id="ch4pa_0" value="0" checked/><label for="ch4pa_0">off</label>
+    <input type="radio" name="ch4pa" id="ch4pa_1" value="1"/><label for="ch4pa_1">even</label>
+    <input type="radio" name="ch4pa" id="ch4pa_2" value="2"/><label for="ch4pa_2">odd</label>
+    </div>
+</div>
+<div class="channel" id="channel_5" style="display:none">
+    <h3>Channel 5</h3>
+    <div>
+    <strong>Channel</strong> <input type="radio" name="ch5en" id="ch5enabled_true" value="true" checked/><label for="ch5enabled_true">enabled</label> <input type="radio" name="ch5en" id="ch5enabled_false" value="false" /><label for="ch5enabled_false">disabled</label><br />
+    <strong>Baud rate</strong> <input type="radio" name="ch5br" value="50" id="ch5br_50" /> <label for="ch5br_50">50</label> <input type="radio" name="ch5br" value="78" id="ch5br_78" /> <label for="ch5br_78">78</label> <input type="radio" name="ch5br" value="110" id="ch5br_110" /> <label for="ch5br_110">110</label> <input type="radio" name="ch5br" value="150" id="ch5br_150" /> <label for="ch5br_150">150</label> 
+    <input type="radio" name="ch5br" value="300" id="ch5br_300" /> <label for="ch5br_300">300</label> <input type="radio" name="ch5br" value="600" id="ch5br_600" /> <label for="ch5br_600">600</label> <input type="radio" name="ch5br" value="1200" id="ch5br_1200" /> <label for="ch5br_1200">1 200</label> <input type="radio" name="ch5br" value="2400" id="ch5br_2400" /> <label for="ch5br_2400">2 400</label> 
+    <input type="radio" name="ch5br" value="4800" id="ch5br_4800" /> <label for="ch5br_4800">4 800</label> <input type="radio" name="ch5br" value="9600" id="ch5br_9600" checked/> <label for="ch5br_9600">9600</label> <input type="radio" name="ch5br" value="19200" id="ch5br_19200" /> <label for="ch5br_19200">19 200</label> <input type="radio" name="ch5br" value="28800" id="ch5br_28800" /> <label for="ch5br_28800">28 800</label> <input type="radio" name="ch5br" value="38400" id="ch5br_38400" /> <label for="ch5br_38400">38 400</label> 
+    <input type="radio" name="ch5br" value="57600" id="ch5br_57600" /> <label for="ch5br_57600">57 600</label> <input type="radio" name="ch5br" value="115200" id="ch5br_115200" /> <label for="ch5br_115200">115 200</label> <br />
+    <strong>Frame settings</strong>
+    <strong>Data bits</strong>
+    <input type="radio" name="ch5db" id="ch5db_5" value="5"/><label for="ch5db_5">5</label>
+    <input type="radio" name="ch5db" id="ch5db_6" value="6"/><label for="ch5db_6">6</label>
+    <input type="radio" name="ch5db" id="ch5db_7" value="7"/><label for="ch5db_7">7</label>
+    <input type="radio" name="ch5db" id="ch5db_8" value="8" checked/><label for="ch5db_8">8</label>
+    <strong>Stop bits</strong>
+    <input type="radio" name="ch5sb" id="ch5sb_0" value="0" checked/><label for="ch5sb_0">1</label>
+    <input type="radio" name="ch5sb" id="ch5sb_1" value="1"/><label for="ch5sb_1">1.5</label>
+    <input type="radio" name="ch5sb" id="ch5sb_2" value="2"/><label for="ch5sb_2">2</label>
+    <strong>Parity</strong>
+    <input type="radio" name="ch5pa" id="ch5pa_0" value="0" checked/><label for="ch5pa_0">off</label>
+    <input type="radio" name="ch5pa" id="ch5pa_1" value="1"/><label for="ch5pa_1">even</label>
+    <input type="radio" name="ch5pa" id="ch5pa_2" value="2"/><label for="ch5pa_2">odd</label>
+    </div>
+</div>
+<div class="channel" id="channel_6" style="display:none">
+    <h3>Channel 6</h3>
+    <div>
+    <strong>Channel</strong> <input type="radio" name="ch6en" id="ch6enabled_true" value="true" checked/><label for="ch6enabled_true">enabled</label> <input type="radio" name="ch6en" id="ch6enabled_false" value="false" /><label for="ch6enabled_false">disabled</label><br />
+    <strong>Baud rate</strong> <input type="radio" name="ch6br" value="50" id="ch6br_50" /> <label for="ch6br_50">50</label> <input type="radio" name="ch6br" value="78" id="ch6br_78" /> <label for="ch6br_78">78</label> <input type="radio" name="ch6br" value="110" id="ch6br_110" /> <label for="ch6br_110">110</label> <input type="radio" name="ch6br" value="150" id="ch6br_150" /> <label for="ch6br_150">150</label> 
+    <input type="radio" name="ch6br" value="300" id="ch6br_300" /> <label for="ch6br_300">300</label> <input type="radio" name="ch6br" value="600" id="ch6br_600" /> <label for="ch6br_600">600</label> <input type="radio" name="ch6br" value="1200" id="ch6br_1200" /> <label for="ch6br_1200">1 200</label> <input type="radio" name="ch6br" value="2400" id="ch6br_2400" /> <label for="ch6br_2400">2 400</label> 
+    <input type="radio" name="ch6br" value="4800" id="ch6br_4800" /> <label for="ch6br_4800">4 800</label> <input type="radio" name="ch6br" value="9600" id="ch6br_9600" checked/> <label for="ch6br_9600">9600</label> <input type="radio" name="ch6br" value="19200" id="ch6br_19200" /> <label for="ch6br_19200">19 200</label> <input type="radio" name="ch6br" value="28800" id="ch6br_28800" /> <label for="ch6br_28800">28 800</label> <input type="radio" name="ch6br" value="38400" id="ch6br_38400" /> <label for="ch6br_38400">38 400</label> 
+    <input type="radio" name="ch6br" value="57600" id="ch6br_57600" /> <label for="ch6br_57600">57 600</label> <input type="radio" name="ch6br" value="115200" id="ch6br_115200" /> <label for="ch6br_115200">115 200</label> <br />
+    <strong>Frame settings</strong>
+    <strong>Data bits</strong>
+    <input type="radio" name="ch6db" id="ch6db_5" value="5"/><label for="ch6db_5">5</label>
+    <input type="radio" name="ch6db" id="ch6db_6" value="6"/><label for="ch6db_6">6</label>
+    <input type="radio" name="ch6db" id="ch6db_7" value="7"/><label for="ch6db_7">7</label>
+    <input type="radio" name="ch6db" id="ch6db_8" value="8" checked/><label for="ch6db_8">8</label>
+    <strong>Stop bits</strong>
+    <input type="radio" name="ch6sb" id="ch6sb_0" value="0" checked/><label for="ch6sb_0">1</label>
+    <input type="radio" name="ch6sb" id="ch6sb_1" value="1"/><label for="ch6sb_1">1.5</label>
+    <input type="radio" name="ch6sb" id="ch6sb_2" value="2"/><label for="ch6sb_2">2</label>
+    <strong>Parity</strong>
+    <input type="radio" name="ch6pa" id="ch6pa_0" value="0" checked/><label for="ch6pa_0">off</label>
+    <input type="radio" name="ch6pa" id="ch6pa_1" value="1"/><label for="ch6pa_1">even</label>
+    <input type="radio" name="ch6pa" id="ch6pa_2" value="2"/><label for="ch6pa_2">odd</label>
+    </div>
+</div>
+<div class="channel" id="channel_7" style="display:none">
+    <h3>Channel 7</h3>
+    <div>
+    <strong>Channel</strong> <input type="radio" name="ch7en" id="ch7enabled_true" value="true" checked/><label for="ch7enabled_true">enabled</label> <input type="radio" name="ch7en" id="ch7enabled_false" value="false" /><label for="ch7enabled_false">disabled</label><br />
+    <strong>Baud rate</strong> <input type="radio" name="ch7br" value="50" id="ch7br_50" /> <label for="ch7br_50">50</label> <input type="radio" name="ch7br" value="78" id="ch7br_78" /> <label for="ch7br_78">78</label> <input type="radio" name="ch7br" value="110" id="ch7br_110" /> <label for="ch7br_110">110</label> <input type="radio" name="ch7br" value="150" id="ch7br_150" /> <label for="ch7br_150">150</label> 
+    <input type="radio" name="ch7br" value="300" id="ch7br_300" /> <label for="ch7br_300">300</label> <input type="radio" name="ch7br" value="600" id="ch7br_600" /> <label for="ch7br_600">600</label> <input type="radio" name="ch7br" value="1200" id="ch7br_1200" /> <label for="ch7br_1200">1 200</label> <input type="radio" name="ch7br" value="2400" id="ch7br_2400" /> <label for="ch7br_2400">2 400</label> 
+    <input type="radio" name="ch7br" value="4800" id="ch7br_4800" /> <label for="ch7br_4800">4 800</label> <input type="radio" name="ch7br" value="9600" id="ch7br_9600" checked/> <label for="ch7br_9600">9600</label> <input type="radio" name="ch7br" value="19200" id="ch7br_19200" /> <label for="ch7br_19200">19 200</label> <input type="radio" name="ch7br" value="28800" id="ch7br_28800" /> <label for="ch7br_28800">28 800</label> <input type="radio" name="ch7br" value="38400" id="ch7br_38400" /> <label for="ch7br_38400">38 400</label> 
+    <input type="radio" name="ch7br" value="57600" id="ch7br_57600" /> <label for="ch7br_57600">57 600</label> <input type="radio" name="ch7br" value="115200" id="ch7br_115200" /> <label for="ch7br_115200">115 200</label> <br />
+    <strong>Frame settings</strong>
+    <strong>Data bits</strong>
+    <input type="radio" name="ch7db" id="ch7db_5" value="5"/><label for="ch7db_5">5</label>
+    <input type="radio" name="ch7db" id="ch7db_6" value="6"/><label for="ch7db_6">6</label>
+    <input type="radio" name="ch7db" id="ch7db_7" value="7"/><label for="ch7db_7">7</label>
+    <input type="radio" name="ch7db" id="ch7db_8" value="8" checked/><label for="ch7db_8">8</label>
+    <strong>Stop bits</strong>
+    <input type="radio" name="ch7sb" id="ch7sb_0" value="0" checked/><label for="ch7sb_0">1</label>
+    <input type="radio" name="ch7sb" id="ch7sb_1" value="1"/><label for="ch7sb_1">1.5</label>
+    <input type="radio" name="ch7sb" id="ch7sb_2" value="2"/><label for="ch7sb_2">2</label>
+    <strong>Parity</strong>
+    <input type="radio" name="ch7pa" id="ch7pa_0" value="0" checked/><label for="ch7pa_0">off</label>
+    <input type="radio" name="ch7pa" id="ch7pa_1" value="1"/><label for="ch7pa_1">even</label>
+    <input type="radio" name="ch7pa" id="ch7pa_2" value="2"/><label for="ch7pa_2">odd</label>
+    </div>
+</div>
+<div class="channel" id="channel_8" style="display:none">
+    <h3>Channel 8</h3>
+    <div>
+    <strong>Channel</strong> <input type="radio" name="ch8en" id="ch8enabled_true" value="true" checked/><label for="ch8enabled_true">enabled</label> <input type="radio" name="ch8en" id="ch8enabled_false" value="false" /><label for="ch8enabled_false">disabled</label><br />
+    <strong>Baud rate</strong> <input type="radio" name="ch8br" value="50" id="ch8br_50" /> <label for="ch8br_50">50</label> <input type="radio" name="ch8br" value="78" id="ch8br_78" /> <label for="ch8br_78">78</label> <input type="radio" name="ch8br" value="110" id="ch8br_110" /> <label for="ch8br_110">110</label> <input type="radio" name="ch8br" value="150" id="ch8br_150" /> <label for="ch8br_150">150</label> 
+    <input type="radio" name="ch8br" value="300" id="ch8br_300" /> <label for="ch8br_300">300</label> <input type="radio" name="ch8br" value="600" id="ch8br_600" /> <label for="ch8br_600">600</label> <input type="radio" name="ch8br" value="1200" id="ch8br_1200" /> <label for="ch8br_1200">1 200</label> <input type="radio" name="ch8br" value="2400" id="ch8br_2400" /> <label for="ch8br_2400">2 400</label> 
+    <input type="radio" name="ch8br" value="4800" id="ch8br_4800" /> <label for="ch8br_4800">4 800</label> <input type="radio" name="ch8br" value="9600" id="ch8br_9600" checked/> <label for="ch8br_9600">9600</label> <input type="radio" name="ch8br" value="19200" id="ch8br_19200" /> <label for="ch8br_19200">19 200</label> <input type="radio" name="ch8br" value="28800" id="ch8br_28800" /> <label for="ch8br_28800">28 800</label> <input type="radio" name="ch8br" value="38400" id="ch8br_38400" /> <label for="ch8br_38400">38 400</label> 
+    <input type="radio" name="ch8br" value="57600" id="ch8br_57600" /> <label for="ch8br_57600">57 600</label> <input type="radio" name="ch8br" value="115200" id="ch8br_115200" /> <label for="ch8br_115200">115 200</label> <br />
+    <strong>Frame settings</strong>
+    <strong>Data bits</strong>
+    <input type="radio" name="ch8db" id="ch8db_5" value="5"/><label for="ch8db_5">5</label>
+    <input type="radio" name="ch8db" id="ch8db_6" value="6"/><label for="ch8db_6">6</label>
+    <input type="radio" name="ch8db" id="ch8db_7" value="7"/><label for="ch8db_7">7</label>
+    <input type="radio" name="ch8db" id="ch8db_8" value="8" checked/><label for="ch8db_8">8</label>
+    <strong>Stop bits</strong>
+    <input type="radio" name="ch8sb" id="ch8sb_0" value="0" checked/><label for="ch8sb_0">1</label>
+    <input type="radio" name="ch8sb" id="ch8sb_1" value="1"/><label for="ch8sb_1">1.5</label>
+    <input type="radio" name="ch8sb" id="ch8sb_2" value="2"/><label for="ch8sb_2">2</label>
+    <strong>Parity</strong>
+    <input type="radio" name="ch8pa" id="ch8pa_0" value="0" checked/><label for="ch8pa_0">off</label>
+    <input type="radio" name="ch8pa" id="ch8pa_1" value="1"/><label for="ch8pa_1">even</label>
+    <input type="radio" name="ch8pa" id="ch8pa_2" value="2"/><label for="ch8pa_2">odd</label>
+    </div>
+</div>
+
+    <input type="submit" value="Save channel settings" class="save" />
+</form>
+</div>
+<div id="logo">LVR</div>
+<ul id="menu">
+<li><a href="index.shtml">Channel settings</a></li>
+<li><a href="settings.shtml" class="last">Device settings</a></li>
+</ul>
+<iframe src="status.shtml" id="status_frame"></iframe>
+</body></html>
