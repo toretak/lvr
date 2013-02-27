@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>AES</title><link rel="stylesheet" type="text/css" href="style/style.css" />
+<script language="javascript">
+  window.history.forward(1);
+ 
+</script></head><body>
+<div id="content">
+<h1>Channel settings</h1>
+<form method="get" action="channelsettings.cgi">
+    <div class="channel">
+    <input type="hidden" name="ch" id="ch1" value="1"/>
+    <h3>Configuration</h3>
+    <strong>Channel</strong> <input type="radio" name="en" id="enabled_true" value="true" checked/><label for="enabled_true">enabled</label> <input type="radio" name="en" id="enabled_false" value="false" /><label for="enabled_false">disabled</label><br />
+    <strong>Baud rate</strong> <input type="radio" name="br" value="50" id="br_50" /> <label for="br_50">50</label> <input type="radio" name="br" value="78" id="br_78" /> <label for="br_78">78</label> <input type="radio" name="br" value="110" id="br_110" /> <label for="br_110">110</label> <input type="radio" name="br" value="150" id="br_150" /> <label for="br_150">150</label> 
+    <input type="radio" name="br" value="300" id="br_300" /> <label for="br_300">300</label> <input type="radio" name="br" value="600" id="br_600" /> <label for="br_600">600</label> <input type="radio" name="br" value="1200" id="br_1200" /> <label for="br_1200">1 200</label> <input type="radio" name="br" value="2400" id="br_2400" /> <label for="br_2400">2 400</label> 
+    <input type="radio" name="br" value="4800" id="br_4800" /> <label for="br_4800">4 800</label> <input type="radio" name="br" value="9600" id="br_9600" checked/> <label for="br_9600">9600</label> <input type="radio" name="br" value="19200" id="br_19200" /> <label for="br_19200">19 200</label> <input type="radio" name="br" value="28800" id="br_28800" /> <label for="br_28800">28 800</label> <input type="radio" name="br" value="38400" id="br_38400" /> <label for="br_38400">38 400</label> 
+    <input type="radio" name="br" value="57600" id="br_57600" /> <label for="br_57600">57 600</label> <input type="radio" name="br" value="115200" id="br_115200" /> <label for="br_115200">115 200</label> <br />
+    <strong>Frame settings</strong>
+    <strong>Data bits</strong>
+    <input type="radio" name="db" id="db_5" value="5"/><label for="db_5">5</label>
+    <input type="radio" name="db" id="db_6" value="6"/><label for="db_6">6</label>
+    <input type="radio" name="db" id="db_7" value="7"/><label for="db_7">7</label>
+    <input type="radio" name="db" id="db_8" value="8" checked/><label for="db_8">8</label>
+    <strong>Stop bits</strong>
+    <input type="radio" name="sb" id="sb_0" value="0" checked/><label for="sb_0">1</label>
+    <input type="radio" name="sb" id="sb_1" value="1"/><label for="sb_1">1.5</label>
+    <input type="radio" name="sb" id="sb_2" value="2"/><label for="sb_2">2</label>
+    <strong>Parity</strong>
+    <input type="radio" name="pa" id="pa_0" value="0" checked/><label for="pa_0">off</label>
+    <input type="radio" name="pa" id="pa_1" value="1"/><label for="pa_1">even</label>
+    <input type="radio" name="pa" id="pa_2" value="2"/><label for="pa_2">odd</label><br /><br /><br />    
+    </div>
+
+    <input type="submit" value="Save channel settings" class="save" />
+</form>
+</div>
+<div id="logo">LVR</div>
+<ul id="menu">
+<li><a href="index.shtml">Channel settings</a></li>
+<li><a href="settings.shtml" class="last">Device settings</a></li>
+</ul>
+<iframe src="status.shtml" id="status_frame"></iframe>
+</body></html>

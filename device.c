@@ -101,7 +101,7 @@ __error__(char *pcFilename, unsigned long ulLine)
 void DebugInit(void)
 {
 #ifdef DEBUG
-	#define BAUD_RATE 460800
+	#define BAUD_RATE 9600
 
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
 	GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
@@ -196,13 +196,16 @@ int Settings_Write(tDeviceSettings *sett)
 
 int Settings_Default(tDeviceSettings *sett)
 {
-	sett->dhcpOn=false;
+	sett->dhcpOn=0;
         
 	sett->ipaddr[0]=192;
 	sett->ipaddr[1]=168;
 	sett->ipaddr[2]=1;
 	sett->ipaddr[3]=64; 
 
+        sett->port = 3327;
+        sett->pr = 0;   //TCP
+        
 	sett->nmask[0]=255;
 	sett->nmask[1]=255;
 	sett->nmask[2]=255;
@@ -213,9 +216,9 @@ int Settings_Default(tDeviceSettings *sett)
 	sett->gw[2]=1;
 	sett->gw[3]=1;
 	
-        
-        sett->setIpConfig=0;
-        
+        sett->mfEnabled = 0;                            //disable mac filter
+        sett->setIpConfig=0;                            //unset changing IP flag
+        sett->macFilterListLen = 0;        //clear mac filter list
         //
         //Save Default setting to Flash memory
         //
@@ -251,19 +254,19 @@ int Settings_Read(tDeviceSettings *sett)
       
       if(SoftEEPROMRead(id, &data, &found)!=0)
       {
-         DebugMsg("SoftEEPROM read failed on %d\n",id);
+         DebugMsg("!!SoftEEPROM read failed on %d\n",id);
          return 0;          
       }
       
       //if read is succesfull than check founded data
-      if(found==true)
+      if(found==1)
       {
         ptr_sett[id]=data;        
         crc = update_crc(crc, ptr_sett[id]);
       }
       else
       {
-        DebugMsg("SoftEEPROM was not found on %d\n",id);
+        DebugMsg("!!SoftEEPROM was not found on %d\n",id);
         return 0;
       }
       
@@ -271,14 +274,14 @@ int Settings_Read(tDeviceSettings *sett)
     
       if(SoftEEPROMRead(id, &data, &found)!=0)
       {
-         DebugMsg("SoftEEPROM read failed on %d\n",id);
+         DebugMsg("!!SoftEEPROM read failed on %d\n",id);
          return 0;          
       }
       
       //if read is succesfull than check founded data
       if(found==false)
       {
-        DebugMsg("SoftEEPROM was not found on %d\n",id);
+        DebugMsg("!!SoftEEPROM was not found on %d\n",id);
         return 0;
       }
     
@@ -286,7 +289,7 @@ int Settings_Read(tDeviceSettings *sett)
 
     if((data!=crc) || (data==0) || (crc==0))
     {
-      DebugMsg("SoftEEPROM CRC fail, Setting Default\n");
+      DebugMsg("WW:SoftEEPROM CRC fail, Setting Default\n");
       if(!Settings_Default(sett))
         return 0;
      
@@ -314,7 +317,6 @@ int Settings_Init(void)
     //
     if (SoftEEPROMInit(SOFTEEPROM_START, SOFTEEPROM_END, SOFTEEPROM_SIZE) != 0)
     {    	
-      DebugMsg("SoftEEPROM Init failed\n");
       return 0;
     
     }
@@ -351,6 +353,8 @@ void Button_init(void)
 
 int main(void)
 {
+    unsigned long *pucTemp;
+    unsigned long *ulIp, *ulMask, *ulGw;
     //
     // Set the clocking to run directly from the crystal.
     //
@@ -374,9 +378,9 @@ int main(void)
     //
     // Initialization emulation EEPROM on FLASH memory
     //
-    if(Settings_Init()==false)
+    if(Settings_Init() == 0)
     {
-      DebugMsg("Setting Init failed\n");
+      DebugMsg("!!!FATAL cano't initialize soft EEPROM\n");
       while(1);
     
     }
@@ -384,11 +388,15 @@ int main(void)
     //
     // Read previous configuration from FLASH memory
     //
-    if(Settings_Read(&deviceSettings)==false)
+    DebugMsg("\nloading device settings\n");
+    if(Settings_Read(&deviceSettings) == 0)
     {
-      DebugMsg("Setting Read failed\n");
+      DebugMsg("\t\t\t\t[!!]");
+      DebugMsg("\nfallback: loading defaults");
       Settings_Default(&deviceSettings);
       
+    } else {
+      DebugMsg("\t\t\t\t[OK]"); 
     }
     
     //
@@ -402,7 +410,7 @@ int main(void)
 
 
         
-    DebugMsg("\nSniffer running\n");
+    DebugMsg("\nstarting ... \n");
     DebugMsg("System clock = %d Hz\n", SysCtlClockGet());
 	
   
@@ -410,7 +418,7 @@ int main(void)
     // Configure Ethernet pins and mode
     //
     EthernetPeriphInit(); 
-
+    
     //
     // Enable processor interrupts.
     //
@@ -419,22 +427,72 @@ int main(void)
     //
     // Set Ethernet MAC address
     //
-    EthernetSetInternalMacAddr((unsigned char *)&deviceSettings.macaddr);
+    //EthernetSetInternalMacAddr((unsigned char *)&deviceSettings.macaddr);
    
     //
     // Initialize the lwIP library
     //                       
     IpStackInit(&deviceSettings);
-
+    DebugMsg("\nstarting stack library \t\t\t\t[OK]");
     //
     // Initialize httpd server.
     //                    
     HttpdInit(&deviceSettings);  
-	
+    DebugMsg("\nstarting HTTPD \t\t\t\t\t[OK]");
     //
     // Loop forever.  All the work is done in interrupt handlers.
     //
     while(1)
     {
+/*
+        if(deviceSettings.setIpConfig==1)
+        { 
+             ulIp = (unsigned long *)&deviceSettings.ipaddr;
+             ulMask = (unsigned long *)&deviceSettings.nmask;  
+             ulGw = (unsigned long *)&deviceSettings.gw;
+
+             //
+             // Wait a while
+             //
+             delay(2000000);
+
+             if(deviceSettings.dhcpOn==0)
+               lwIPNetworkConfigChange(htonl(*ulIp), htonl(*ulMask), htonl(*ulGw), IPADDR_USE_STATIC);
+             else
+             {
+                   //
+                   // If DHCP has already been started, we need to clear the IPs and
+                   // switch to static.  This forces the LWIP to get new IP address
+                   // and retry the DHCP connection.
+                   //
+                   lwIPNetworkConfigChange(0, 0, 0, IPADDR_USE_STATIC);
+
+                   //
+                   //Restart the DHCP connection.
+                   //
+                   lwIPNetworkConfigChange(0, 0, 0, IPADDR_USE_DHCP);
+
+
+                   DebugMsg("Getting IP address from DHCP...\n");
+
+                   pucTemp = (unsigned long *)&deviceSettings.ipaddr;
+
+                   //
+                   //  Wait until DHCP assign IP address
+                   //
+                   while((*pucTemp=lwIPLocalIPAddrGet())==0)
+                   {
+                      delay(1000000);                 
+                   }
+
+                   pucTemp = (unsigned long *)&deviceSettings.nmask; 
+                   *pucTemp=lwIPLocalNetMaskGet();   
+                   pucTemp = (unsigned long *)&deviceSettings.gw;
+                   *pucTemp=lwIPLocalGWAddrGet();
+             }
+
+             deviceSettings.setIpConfig=0;
+        }
+*/
     }
 }

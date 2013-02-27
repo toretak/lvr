@@ -1,22 +1,14 @@
-gcc/lmi_fs.o: lmi_fs.c \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/string.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/_ansi.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/newlib.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/sys/config.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/machine/ieeefp.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/sys/reent.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/_ansi.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/sys/_types.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/machine/_types.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/machine/_default_types.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/sys/lock.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/include/stddef.h \
- /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/../../../../arm-none-eabi/include/sys/string.h \
- /home/toretak/stellaris/stellarisware/inc/hw_memmap.h \
- /home/toretak/stellaris/stellarisware/inc/hw_ssi.h \
- /home/toretak/stellaris/stellarisware/inc/hw_sysctl.h \
+gcc/net/ethernetwrapper.o: net/ethernetwrapper.c \
+ /home/toretak/stellaris/stellarisware/inc/hw_ethernet.h \
  /home/toretak/stellaris/stellarisware/inc/hw_types.h \
+ /home/toretak/stellaris/stellarisware/inc/hw_memmap.h \
+ /home/toretak/stellaris/stellarisware/driverlib/ethernet.h \
  /home/toretak/stellaris/stellarisware/driverlib/sysctl.h \
+ /home/toretak/stellaris/stellarisware/driverlib/gpio.h \
+ /home/toretak/stellaris/stellarisware/driverlib/pin_map.h \
+ /home/toretak/stellaris/stellarisware/driverlib/flash.h \
+ /home/toretak/stellaris/stellarisware/utils/ustdlib.h \
+ /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/include/stdarg.h \
  /home/toretak/stellaris/stellarisware/utils/lwiplib.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/opt.h \
  lwipopts.h \
@@ -42,6 +34,5 @@ gcc/lmi_fs.o: lmi_fs.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/stats.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/memp.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/memp_std.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/apps/httpserver_raw/fs.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/apps/httpserver_raw/fsdata.h \
- lmi-fsdata.h
+ /home/toretak/stellaris/stellarisware/utils/locator.h \
+ net/ethernetwrapper.h net/../device.h

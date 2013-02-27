@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>AES</title><link rel="stylesheet" type="text/css" href="style/style.css" />
+<script language="javascript">
+     var redir = '<!--#ipaddr-->'
+     var str
+     function removeSSItag(str)
+      {
+      	return str.substring(str.indexOf("-->")+3);
+      }
+        
+     window.history.forward(1);
+     str="http://" + removeSSItag(redir)
+     window.setTimeout("window.location.replace(str); ",3000);
+ 
+</script></head><body>
+<div id="content">
+<h1>Redirecting</h1>
+<p>Redirection to <!--#redirect--> by 3 seconds...</p>
+</div>
+<div id="logo">LVR</div>
+<ul id="menu">
+<li><a href="index.shtml">Channel settings</a></li>
+<li><a href="settings.shtml" class="last">Device settings</a></li>
+</ul>
+<iframe src="status.shtml" id="status_frame"></iframe>
+</body></html>

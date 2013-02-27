@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="84">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df name="webka" root=".">
+      <df name="fs">
+        <df name="style">
+        </df>
+      </df>
+      <df name="fs_big">
+        <df name="style">
+        </df>
+      </df>
+      <df name="fs_one">
+        <df name="style">
+          <in>footer.png</in>
+          <in>header.png</in>
+          <in>style.css</in>
+        </df>
+      </df>
+      <df name="gcc">
+      </df>
+      <df name="gcc">
+        <df name="myutils">
+          <in>crc.d</in>
+          <in>uartstdio.d</in>
+        </df>
+        <df name="net">
+        </df>
+        <df name="utils">
+        </df>
+      </df>
+      <df name="myutils">
+        <in>crc.c</in>
+        <in>crc.h</in>
+        <in>packetfifo.c</in>
+        <in>packetfifo.h</in>
+        <in>uartstdio.c</in>
+        <in>uartstdio.h</in>
+      </df>
+      <df name="net">
+        <in>cgifuncs.c</in>
+        <in>cgifuncs.h</in>
+        <in>ethernetwrapper.c</in>
+        <in>ethernetwrapper.h</in>
+        <in>http_conf.c</in>
+        <in>http_conf.h</in>
+      </df>
+      <df name="utils">
+        <in>softeeprom.c</in>
+        <in>softeeprom.h</in>
+      </df>
+      <in>device.c</in>
+      <in>device.h</in>
+      <in>lmi-fsdata.h</in>
+      <in>lmi_fs.c</in>
+      <in>lwipopts.h</in>
+      <in>one-lmi-fsdata.h</in>
+      <in>startup_ccs.c</in>
+      <in>startup_gcc.c</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+        </makeTool>
+      </makefileType>
+      <item path="device.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+      <item path="lmi_fs.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+      <item path="myutils/crc.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+      <item path="myutils/packetfifo.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+      <item path="myutils/uartstdio.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+      <item path="net/cgifuncs.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+      <item path="net/ethernetwrapper.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+      <item path="net/http_conf.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+      <item path="startup_ccs.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+      <item path="startup_gcc.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+      <item path="utils/softeeprom.c" ex="false" tool="0" flavor2="2">
+        <cTool>
+        </cTool>
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

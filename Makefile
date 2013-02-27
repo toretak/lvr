@@ -91,19 +91,21 @@ clean:
 #
 ${COMPILER}:
 	@mkdir -p ${COMPILER}
+	@mkdir -p ${COMPILER}/utils
+	@mkdir -p ${COMPILER}/myutils
+	@mkdir -p ${COMPILER}/net
 
 #
 # Rules for building the Sample Ethernet I/O Control Application using lwIP 1.3.2.
 #
-${COMPILER}/enet_io.axf: ./myutils/uartstdio.o
-${COMPILER}/enet_io.axf: ./myutils/crc.o
-${COMPILER}/enet_io.axf: ./utils/softeeprom.o
-${COMPILER}/enet_io.axf: ./net/cgifuncs.o
-${COMPILER}/enet_io.axf: ./net/ethernetwrapper.o
-${COMPILER}/enet_io.axf: ./net/http_conf.o
+${COMPILER}/enet_io.axf: ${COMPILER}/myutils/uartstdio.o
+${COMPILER}/enet_io.axf: ${COMPILER}/myutils/crc.o
+${COMPILER}/enet_io.axf: ${COMPILER}/utils/softeeprom.o
+${COMPILER}/enet_io.axf: ${COMPILER}/net/cgifuncs.o
+${COMPILER}/enet_io.axf: ${COMPILER}/net/ethernetwrapper.o
+${COMPILER}/enet_io.axf: ${COMPILER}/net/http_conf.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/device.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/httpd.o
-${COMPILER}/enet_io.axf: ${COMPILER}/io.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/lmi_fs.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/locator.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/lwiplib.o

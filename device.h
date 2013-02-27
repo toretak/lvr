@@ -20,35 +20,6 @@
 
 //---------------------------------------------------------------
 
-//#define TRX_IO_IRQ               GPIO_PORTD_BASE , GPIO_PIN_4
-//#define TRX_IRQ_PERIPHERAL 	 SYSCTL_PERIPH_GPIOD
-//#define TRX_PORT_IRQ	     	 INT_GPIOD
-
-//---------------------------------------------------------------
-
-// AT86RF231 Pinout
-#define TRX231_PORT_BASE         GPIO_PORTD_BASE
-#define TRX231_PORT_IRQ	     	 INT_GPIOD
-#define TRX231_PERIPHERAL 	 SYSCTL_PERIPH_GPIOD
-#define TRX231_SEL               GPIO_PIN_5
-#define TRX231_IRQ               GPIO_PIN_4
-#define TRX231_RST               GPIO_PIN_6
-#define TRX231_SLP               GPIO_PIN_7
-
-//---------------------------------------------------------------
-
-// AT86RF212 Pinout
-
-#define TRX212_PERIPHERAL 	SYSCTL_PERIPH_GPIOC //all using peripherals
-#define TRX212_PORT_IRQ	     	INT_GPIOC
-
-#define TRX212_IO_SEL           GPIO_PORTC_BASE , GPIO_PIN_4
-#define TRX212_IO_IRQ           GPIO_PORTC_BASE , GPIO_PIN_5
-#define TRX212_IO_RST           GPIO_PORTC_BASE , GPIO_PIN_7
-#define TRX212_IO_SLP           GPIO_PORTC_BASE , GPIO_PIN_6
-
-//---------------------------------------------------------------
-
 // LED status
 #define LED_PORT_BASE	         GPIO_PORTF_BASE
 #define LED_PERIPHERAL		 SYSCTL_PERIPH_GPIOF
@@ -65,13 +36,19 @@
 // Defines for the SoftEEPROM area.
 //@{
 //*****************************************************************************
-#define SOFTEEPROM_START	0x3E000	//!< Start of SoftEEPROM location in flash
-#define SOFTEEPROM_END		0x3F000	//!< End of SoftEEPROM location in flash
+//#define SOFTEEPROM_START	0x3E000	//!< Start of SoftEEPROM location in flash
+//#define SOFTEEPROM_END		0x3F000	//!< End of SoftEEPROM location in flash
+//#define SOFTEEPROM_SIZE         0x400
+#define SOFTEEPROM_START	0x00010000
+#define SOFTEEPROM_END		0x00011000
+#define SOFTEEPROM_SIZE				0x00000800
 //#define SOFTEEPROM_END		0x0003FFFF	//!< End of SoftEEPROM location in flash
-#define SOFTEEPROM_SIZE         0x400
+
+#define MAC_LIST_SZIZE          5
 
 //*****************************************************************************
 typedef enum {RUNNING, STOPPED, ERROR } tDeviceState;
+typedef enum {OK, FE, PE, FP } tChannelState;
 typedef struct channelSettings
 {
 	int enabled;
@@ -79,6 +56,7 @@ typedef struct channelSettings
 	int parity;
 	int dataBits;
 	int stopBit;
+        tChannelState state;        
 } tChannelSettings;
 
 typedef struct macList
@@ -90,13 +68,19 @@ typedef struct deviceSettings
 {
 	tDeviceState state;
 	unsigned char ipaddr[4];
+	unsigned short port;
 	unsigned char nmask[4];
 	unsigned char gw[4];
 	unsigned char macaddr[8];
-        int      dhcpOn;
-        int      setIpConfig;
+        int pr;                         //protocol : 0 - TCP, 1 - UDP
+	unsigned char reipaddr[4];
+	unsigned short report;
 	tChannelSettings channelSettings[8];
-	tMacList	*macFilter;
+	tMacList macFilter[MAC_LIST_SZIZE];
+        int macFilterListLen;
+        int mfEnabled;
+        int dhcpOn;
+	int setIpConfig;
 } tDeviceSettings;
 
 //*****************************************************************************
@@ -106,8 +90,6 @@ typedef struct deviceSettings
 //
 //*****************************************************************************
 
-extern unsigned long g_PacketCount;
-extern unsigned long g_PacketDrop;
 
 extern unsigned long get_time(void);
 

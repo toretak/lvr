@@ -28,15 +28,16 @@
 void IpStackInit(tDeviceSettings  *device)
 {  
 	
-    if(device->dhcpOn==true)
+    if(device->dhcpOn==1){
+      DebugMsg("DHCP enabled");
       lwIPInit((const unsigned char *)&device->macaddr, 0, 0, 0, IPADDR_USE_DHCP);
-    else                  
+    }else{
       lwIPInit((const unsigned char *)&device->macaddr, 
 			  IP_ADDR(device->ipaddr[0],device->ipaddr[1], device->ipaddr[2], device->ipaddr[3]),
 			  IP_ADDR(device->nmask[0], device->nmask[1], device->nmask[2], device->nmask[3]),
 			  IP_ADDR(device->gw[0], device->gw[1], device->gw[2], device->gw[3]),
 			  IPADDR_USE_STATIC);
-
+    }
 
     // DHCP service
     // Setup the device locator service.
@@ -110,39 +111,11 @@ void EthernetPeriphInit(void)
 
 
 void EthernetSetInternalMacAddr(unsigned char pucMACArray[])
-{
-	
-    unsigned long ulUser0, ulUser1;
- 	
-    //
-    // Configure the hardware MAC address for Ethernet Controller filtering of
-    // incoming packets.
-    //
-    // For the LM3S6965 Evaluation Kit, the MAC address will be stored in the
-    // non-volatile USER0 and USER1 registers.  These registers can be read
-    // using the FlashUserGet function, as illustrated below.
-    //
-    FlashUserGet(&ulUser0, &ulUser1);
-    if((ulUser0 == 0xffffffff) || (ulUser1 == 0xffffffff))
-    {
-        //
-        // We should never get here.  This is an error if the MAC address has
-        // not been programmed into the device.  Exit the program.
-        //
-        while(1)
-        {
-        }
-    }
-
-    //
-    // Convert the 24/24 split MAC address from NV ram into a 32/16 split MAC
-    // address needed to program the hardware registers, then program the MAC
-    // address into the Ethernet Controller registers.
-    //
-    pucMACArray[0] = ((ulUser0 >>  0) & 0xff);
-    pucMACArray[1] = ((ulUser0 >>  8) & 0xff);
-    pucMACArray[2] = ((ulUser0 >> 16) & 0xff);
-    pucMACArray[3] = ((ulUser1 >>  0) & 0xff);
-    pucMACArray[4] = ((ulUser1 >>  8) & 0xff);
-    pucMACArray[5] = ((ulUser1 >> 16) & 0xff);	
+{	
+    pucMACArray[0] = 0xff;
+    pucMACArray[1] = 0xff;
+    pucMACArray[2] = 0xff;
+    pucMACArray[3] = 0xff;
+    pucMACArray[4] = 0xff;
+    pucMACArray[5] = 0xff;	
 }

@@ -7,10 +7,7 @@
 </div>
 <div class="fleft" style="width:600px">
 <table id="status_table">
-<tr><td>Channel 1</td><td><!--#ch1state--></td><td>Channel 5</td><td><!--#ch5state--></td></tr>
-<tr><td>Channel 2</td><td><!--#ch2state--></td><td>Channel 6</td><td><!--#ch6state--></td></tr>
-<tr><td>Channel 3</td><td><!--#ch3state--></td><td>Channel 7</td><td><!--#ch7state--></td></tr>
-<tr><td>Channel 4</td><td><!--#ch4state--></td><td>Channel 8</td><td><!--#ch8state--></td></tr>
+<tr><td>Channel 1</td><td><!--#ch1state--></td>
 </table>
 </div>
 <div class="clear"></div>

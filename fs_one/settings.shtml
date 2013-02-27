@@ -4,10 +4,15 @@
   window.history.forward(1);
   var defaults = '<!--#sett-->';
   var macList = '<!--#maclist-->';
+  var errMsg = '<!--#errmsg-->';
   function removeSSITag(input){
     return input.substring(input.indexOf("-->")+3);
   }
   function init(){
+      errMsg = removeSSITag(errMsg);
+      if(errMsg != ""){
+	alert(errMsg);
+      }
       defaults = removeSSITag(defaults);
       var defArray = defaults.split(',');
       if(defaults.length>0 && defArray.length > 0){

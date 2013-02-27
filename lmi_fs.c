@@ -1,8 +1,8 @@
 //*****************************************************************************
 //
-// lmi_fs.c - File System Processing for enet_io application.
+// lmi_fs.c - File System Processing for lwIP Web Server Apps.
 //
-// Copyright (c) 2007-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2007-2011 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 // Texas Instruments (TI) is supplying this software for use solely and
@@ -18,53 +18,50 @@
 // CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
 // DAMAGES, FOR ANY REASON WHATSOEVER.
 // 
-// This is part of revision 9453 of the EK-LM3S8962 Firmware Package.
+// This is part of revision 8264 of the EK-LM3S8962 Firmware Package.
 //
 //*****************************************************************************
 
+// COMPILER
 #include <string.h>
+// STELLARISWARE
+#include "inc/hw_memmap.h"
+#include "inc/hw_ssi.h"
+#include "inc/hw_sysctl.h"
 #include "inc/hw_types.h"
+#include "driverlib/sysctl.h"
 #include "utils/lwiplib.h"
-#include "utils/ustdlib.h"
 #include "httpserver_raw/fs.h"
 #include "httpserver_raw/fsdata.h"
-#include "io.h"
+
 
 //*****************************************************************************
 //
 // Include the file system data for this application.  This file is generated
-// by the makefsfile utility, using the following command (all on one line):
+// by the makefsfile script from lwIP, using the following command (all on one
+// line):
 //
-//     makefsfile -i fs -o io_fsdata.h -r -h
+//     makefsfile -i fs -o lmi-fsdata.h -r -h
 //
-// If any changes are made to the static content of the web pages served by the
-// application, this script must be used to regenerate io_fsdata.h in order
-// for those changes to be picked up by the web server.
-//
-//*****************************************************************************
-#include "lmi-fsdata.h"
-
-//*****************************************************************************
-//
-// Global Settings for demo page content.
+// If any changes are made to the static content of the files served by the
+// application, this command must be used to regenerate lmi-fsdata.h in order
+// for those changes to be picked up by the file server.
 //
 //*****************************************************************************
-static char g_cSampleTextBuffer[16] = {0};
-
+#ifdef ONE_CHANNEL
+        #include "one-lmi-fsdata.h"
+#else
+        #include "lmi-fsdata.h"
+#endif
 //*****************************************************************************
 //
 // Open a file and return a handle to the file, if found.  Otherwise,
-// return NULL.  This function also looks for special filenames used to
-// provide specific status information or to control various subsystems.
-// These filenames are used by the JavaScript on the "IO Control Demo 1"
-// example web page.
+// return NULL.
 //
 //*****************************************************************************
 struct fs_file *
 fs_open(char *name)
 {
-    char *data;
-    int i;
     const struct fsdata_file *ptTree;
     struct fs_file *ptFile = NULL;
 
@@ -78,285 +75,51 @@ fs_open(char *name)
     }
 
     //
-    // Process request to toggle STATUS LED
+    // Initialize the file system tree pointer to the root of the linked list.
     //
-    if(strncmp(name, "/cgi-bin/toggle_led", 19) == 0)
+    ptTree = FS_ROOT;
+
+    //
+    // Begin processing the linked list, looking for the requested file name.
+    //
+    while(NULL != ptTree)
     {
         //
-        // Toggle the STATUS LED
+        // Compare the requested file "name" to the file name in the
+        // current node.
         //
-        io_set_led(!io_is_led_on());
-
-        //
-        // Setup the file structure to return whatever.
-        //
-        ptFile->data = NULL;
-        ptFile->len = 0;
-        ptFile->index = 0;
-        ptFile->pextension = NULL;
-
-        //
-        // Return the file system pointer.
-        //
-        return(ptFile);
-    }
-
-    //
-    // Process request to turn PWM ON/OFF
-    //
-    if(strncmp(name, "/cgi-bin/pwm_onoff", 18) == 0)
-    {
-        //
-        // Turn PWM on/off
-        //
-        io_set_pwm(!io_is_pwm_on());
-
-        //
-        // Setup the file structure to return whatever.
-        //
-        ptFile->data = NULL;
-        ptFile->len = 0;
-        ptFile->index = 0;
-        ptFile->pextension = NULL;
-
-        //
-        // Return the file system pointer.
-        //
-        return(ptFile);
-    }
-
-    //
-    // Process request for PWM freq update
-    //
-    if(strncmp(name, "/pwm_freq?value=", 16) == 0)
-    {
-        //
-        // Get Frequency String
-        //
-        data = name;
-        data += 16;
-        i = 0;
-        do
-        {
-            switch(data[i])
-            {
-                case 0:
-                case '&':
-                    g_cSampleTextBuffer[i] = 0;
-                    break;
-                case '+':
-                    g_cSampleTextBuffer[i] = ' ';
-                    break;
-                default:
-                    g_cSampleTextBuffer[i] = data[i];
-                    break;
-            }
-            if(g_cSampleTextBuffer[i] == 0)
-            {
-                break;
-            }
-            i++;
-        }while(i < sizeof(g_cSampleTextBuffer));
-
-        //
-        // Set PWM Frequency
-        //
-        io_pwm_freq(ustrtoul(g_cSampleTextBuffer,NULL,10));
-
-        //
-        // Setup the file structure to return whatever.
-        //
-        ptFile->data = NULL;
-        ptFile->len = 0;
-        ptFile->index = 0;
-        ptFile->pextension = NULL;
-
-        //
-        // Return the file system pointer.
-        //
-        return(ptFile);
-    }
-
-    //
-    // Process request for PWM Duty Cycle update
-    //
-    if(strncmp(name, "/pwm_dutycycle?value=", 21) == 0)
-    {
-        //
-        // Get Duty Cycle String
-        //
-        data = name;
-        data += 21;
-        i = 0;
-        do
-        {
-            switch(data[i])
-            {
-                case 0:
-                case '&':
-                    g_cSampleTextBuffer[i] = 0;
-                    break;
-                case '+':
-                    g_cSampleTextBuffer[i] = ' ';
-                    break;
-                default:
-                    g_cSampleTextBuffer[i] = data[i];
-                    break;
-            }
-            if(g_cSampleTextBuffer[i] == 0)
-            {
-                break;
-            }
-            i++;
-        }while(i < sizeof(g_cSampleTextBuffer));
-
-        //
-        // Set PWM Duty Cycle
-        //
-        io_pwm_dutycycle(ustrtoul(g_cSampleTextBuffer,NULL,10));
-
-        //
-        // Setup the file structure to return whatever.
-        //
-        ptFile->data = NULL;
-        ptFile->len = 0;
-        ptFile->index = 0;
-        ptFile->pextension = NULL;
-
-        //
-        // Return the file system pointer.
-        //
-        return(ptFile);
-    }
-
-    //
-    // Request for LED State?
-    //
-    if(strncmp(name, "/ledstate?id", 12) == 0)
-    {
-        static char pcBuf[4];
-
-        //
-        // Get the state of the LED
-        //
-        io_get_ledstate(pcBuf, 4);
-
-        ptFile->data = pcBuf;
-        ptFile->len = strlen(pcBuf);
-        ptFile->index = ptFile->len;
-        ptFile->pextension = NULL;
-        return(ptFile);
-    }
-
-    //
-    // Request for PWM State?
-    //
-    if(strncmp(name, "/pwmstate?id", 12) == 0)
-    {
-        static char pcBuf[4];
-
-        //
-        // Get the state of the PWM
-        //
-        io_get_pwmstate(pcBuf, 4);
-
-        ptFile->data = pcBuf;
-        ptFile->len = strlen(pcBuf);
-        ptFile->index = ptFile->len;
-        ptFile->pextension = NULL;
-        return(ptFile);
-    }
-
-    //
-    // Request PWM Frequency?
-    //
-    if(strncmp(name, "/pwmfreqget?id", 14) == 0)
-    {
-        static char pcBuf[16];
-
-        //
-        // Get the frequency of the PWM
-        //
-        usprintf(pcBuf,"%d",io_get_pwmfreq());
-
-        ptFile->data = pcBuf;
-        ptFile->len = strlen(pcBuf);
-        ptFile->index = ptFile->len;
-        ptFile->pextension = NULL;
-        return(ptFile);
-    }
-
-    //
-    // Request PWM Duty Cycle?
-    //
-    if(strncmp(name, "/pwmdutycycleget?id", 19) == 0)
-    {
-        static char pcBuf[16];
-
-        //
-        // Get the duty cycle of te PWM
-        //
-        usprintf(pcBuf,"%d",io_get_pwmdutycycle());
-
-        ptFile->data = pcBuf;
-        ptFile->len = strlen(pcBuf);
-        ptFile->index = ptFile->len;
-        ptFile->pextension = NULL;
-        return(ptFile);
-    }
-
-    //
-    // If I can't find it there, look in the rest of the main file system
-    //
-    else
-    {
-        //
-        // Initialize the file system tree pointer to the root of the linked list.
-        //
-        ptTree = FS_ROOT;
-
-        //
-        // Begin processing the linked list, looking for the requested file name.
-        //
-        while(NULL != ptTree)
+        if(strncmp(name, (char *)ptTree->name, ptTree->len) == 0)
         {
             //
-            // Compare the requested file "name" to the file name in the
-            // current node.
+            // Fill in the data pointer and length values from the
+            // linked list node.
             //
-            if(strncmp(name, (char *)ptTree->name, ptTree->len) == 0)
-            {
-                //
-                // Fill in the data pointer and length values from the
-                // linked list node.
-                //
-                ptFile->data = (char *)ptTree->data;
-                ptFile->len = ptTree->len;
-
-                //
-                // For now, we setup the read index to the end of the file,
-                // indicating that all data has been read.
-                //
-                ptFile->index = ptTree->len;
-
-                //
-                // We are not using any file system extensions in this
-                // application, so set the pointer to NULL.
-                //
-                ptFile->pextension = NULL;
-
-                //
-                // Exit the loop and return the file system pointer.
-                //
-                break;
-            }
+            ptFile->data = (char *)ptTree->data;
+            ptFile->len = ptTree->len;
 
             //
-            // If we get here, we did not find the file at this node of the linked
-            // list.  Get the next element in the list.
+            // For now, we setup the read index to the end of the file,
+            // indicating that all data has been read.
             //
-            ptTree = ptTree->next;
+            ptFile->index = ptTree->len;
+
+            //
+            // We are not using any file system extensions in this
+            // application, so set the pointer to NULL.
+            //
+            ptFile->pextension = NULL;
+
+            //
+            // Exit the loop and return the file system pointer.
+            //
+            break;
         }
+
+        //
+        // If we get here, we did not find the file at this node of the linked
+        // list.  Get the next element in the list.
+        //
+        ptTree = ptTree->next;
     }
 
     //
@@ -384,6 +147,14 @@ void
 fs_close(struct fs_file *file)
 {
     //
+    // If a Fat file was opened, free its object.
+    //
+    if(file->pextension)
+    {
+        mem_free(file->pextension);
+    }
+
+    //
     // Free the main file system object.
     //
     mem_free(file);
@@ -391,7 +162,40 @@ fs_close(struct fs_file *file)
 
 //*****************************************************************************
 //
-// Read the next chunck of data from the file.  Return the count of data
+// Move file pointer.
+//
+//*****************************************************************************
+int fs_seek(struct fs_file *file, int offset)
+{
+    //
+    // Check to see if a Fat File was opened and process it.
+    //
+    if(file->pextension)
+    {
+        return((int)offset);
+    }
+
+    //
+    // Check if offset is feasible
+    //
+    if(offset > file->len)
+    {
+        //
+        // Can not go beyond EOF. Return a -1 to indicate EOF.
+        //
+        return(-1);
+    }
+
+    //
+    // Move flash file pointer
+    //
+    file->index = offset;
+    return((int)offset);
+}
+
+//*****************************************************************************
+//
+// Read the next chunk of data from the file.  Return the count of data
 // that was read.  Return 0 if no data is currently available.  Return
 // a -1 if at the end of file.
 //
@@ -402,15 +206,12 @@ fs_read(struct fs_file *file, char *buffer, int count)
     int iAvailable;
 
     //
-    // Check to see if a command (pextension = 1).
+    // Check to see if a Fat File was opened and process it.
     //
-    if(file->pextension == (void *)1)
+    if(file->pextension)
     {
-        //
-        // Nothting to do for this file type.
-        //
-        file->pextension = NULL;
-        return(-1);
+        unsigned short usBytesRead = -1;
+        return((int)usBytesRead);
     }
 
     //
@@ -445,3 +246,18 @@ fs_read(struct fs_file *file, char *buffer, int count)
     //
     return(iAvailable);
 }
+
+//*****************************************************************************
+//
+// Write a chunk of data to the file.  Return the count of data written.
+//
+//*****************************************************************************
+int fs_write(struct fs_file *file, char *buffer, int count)
+{
+    //
+    // Flash filesystem is read-only. Return a -1 for EOF indication.
+    //
+    return(-1);
+}
+
+
