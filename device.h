@@ -95,7 +95,7 @@ extern unsigned long get_time(void);
 
 extern void DebugMsg(const char *str, ...);
 
-extern void ledgreen_pinset(tBoolean val);
+extern void ledgreen_pinset(int val);
 
 extern int Settings_Write(tDeviceSettings *sett);
 

@@ -129,7 +129,7 @@ void DebugMsg(const char* str, ...)
 	va_end(vaArgP);
 #endif
 }
-void ledgreen_pinset(tBoolean val)
+void ledgreen_pinset(int val)
 {
   if(val)
   	GPIOPinWrite(LED_PORT_BASE, LED_GREEN, 0xFF);
@@ -439,6 +439,7 @@ int main(void)
     //                    
     HttpdInit(&deviceSettings);  
     DebugMsg("\nstarting HTTPD \t\t\t\t\t[OK]");
+    ledgreen_pinset(1);  
     //
     // Loop forever.  All the work is done in interrupt handlers.
     //

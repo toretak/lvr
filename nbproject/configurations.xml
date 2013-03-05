@@ -12,17 +12,18 @@
       </df>
       <df name="fs_one">
         <df name="style">
-          <in>footer.png</in>
-          <in>header.png</in>
-          <in>style.css</in>
         </df>
       </df>
       <df name="gcc">
+        <df name="myutils">
+        </df>
+        <df name="net">
+        </df>
+        <df name="utils">
+        </df>
       </df>
       <df name="gcc">
         <df name="myutils">
-          <in>crc.d</in>
-          <in>uartstdio.d</in>
         </df>
         <df name="net">
         </df>
