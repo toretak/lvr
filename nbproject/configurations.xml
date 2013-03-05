@@ -15,15 +15,11 @@
         </df>
       </df>
       <df name="gcc">
-        <df name="myutils">
-        </df>
-        <df name="net">
-        </df>
-        <df name="utils">
-        </df>
       </df>
       <df name="gcc">
         <df name="myutils">
+          <in>crc.d</in>
+          <in>uartstdio.d</in>
         </df>
         <df name="net">
         </df>
@@ -45,6 +41,8 @@
         <in>ethernetwrapper.h</in>
         <in>http_conf.c</in>
         <in>http_conf.h</in>
+        <in>httpd.c</in>
+        <in>httpd.h</in>
       </df>
       <df name="utils">
         <in>softeeprom.c</in>

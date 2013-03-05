@@ -8,7 +8,7 @@
 // STELARISWARE
 #include "string.h"
 #include "utils/lwiplib.h"
-#include "httpserver_raw/httpd.h"
+#include "httpd.h"
 #include "utils/ustdlib.h"
 #include "lwip/inet.h"
 
@@ -76,162 +76,132 @@ void lwIPHostTimerHandler(void)
 //*****************************************************************************
 int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
 {
-    if(iIndex >= SSI_INDEX_CHN_STATE_LOW) {
-        int chIndex = iIndex - SSI_INDEX_CHN_STATE_LOW;
-        switch ((ptrDeviceSettings->channelSettings[chIndex]).state){
-            case PE:
-                usnprintf(pcInsert, iInsertLen, "Parity error");
-            break;
-            case FE:
-                usnprintf(pcInsert, iInsertLen, "Frame error");
-            break;
-            case FP:
-                usnprintf(pcInsert, iInsertLen, "Frame &amp; parity error");
-            break;
-            default:
-                usnprintf(pcInsert, iInsertLen, "OK");
-        }
+    if(iIndex >= SSI_INDEX_CHN_STATE_LOW && iIndex <= SSI_INDEX_CHN_STATE_HIGH) {
+        //int chIndex = iIndex - SSI_INDEX_CHN_STATE_LOW;
+        //TODO read channel status
+        //if((ptrDeviceSettings->channelSettings[chIndex]).controlReg)
+        
+        usnprintf(pcInsert, iInsertLen, "OK");
+        
         
     }else{
-    switch(iIndex)
-    {
-             
-        case SSI_INDEX_REDIR:
-          
-          usnprintf(pcInsert, iInsertLen,  "%d.%d.%d.%d", ptrDeviceSettings->ipaddr[0],
-                    ptrDeviceSettings->ipaddr[1], 
-                    ptrDeviceSettings->ipaddr[2], 
-                    ptrDeviceSettings->ipaddr[3]);  
-          
-          
-          ptrDeviceSettings->setIpConfig=1;
-          
-          
-          break;
-      
-    	case SSI_INDEX_STATE:
-    		switch(ptrDeviceSettings->state)
-    		{
-    			case RUNNING:
-    				usnprintf(pcInsert, iInsertLen,"RUNNING");
-    			break;
-    			case STOPPED:
-    				usnprintf(pcInsert, iInsertLen,"STOPPED");
-    			break;
-    			case ERROR:
-    				usnprintf(pcInsert, iInsertLen,"ERROR");
-    			break;
-    		}  	
-    	break;
-    	
-    	case SSI_INDEX_IPADDR:
-    		usnprintf(pcInsert, iInsertLen,  "%d.%d.%d.%d", ptrDeviceSettings->ipaddr[0],
-											      ptrDeviceSettings->ipaddr[1], 
-											      ptrDeviceSettings->ipaddr[2], 
-											      ptrDeviceSettings->ipaddr[3]);
-    	break;
-    	
-    	case SSI_INDEX_NMASK:
-    		usnprintf(pcInsert, iInsertLen,  "%d.%d.%d.%d", ptrDeviceSettings->nmask[0],
-											      ptrDeviceSettings->nmask[1], 
-											      ptrDeviceSettings->nmask[2], 
-											      ptrDeviceSettings->nmask[3]);
-    	break;
-    	
-    	case SSI_INDEX_GW:
-    		usnprintf(pcInsert, iInsertLen,  "%d.%d.%d.%d", ptrDeviceSettings->gw[0],
-											      ptrDeviceSettings->gw[1], 
-											      ptrDeviceSettings->gw[2], 
-											      ptrDeviceSettings->gw[3]);
-    	break;
-    	
-    	case SSI_INDEX_MACADDR:
-    		usnprintf(pcInsert, iInsertLen,  "%02X-%02X-%02X-%02X-%02X-%02X", 
-    		ptrDeviceSettings->macaddr[0],
-    		ptrDeviceSettings->macaddr[1],
-    		ptrDeviceSettings->macaddr[2],
-    		ptrDeviceSettings->macaddr[3],
-    		ptrDeviceSettings->macaddr[4],
-    		ptrDeviceSettings->macaddr[5]);
-    	break;
-    	
-    	
-            	
-        case SSI_INDEX_DHCP:
-    		usnprintf(pcInsert, iInsertLen, (ptrDeviceSettings->dhcpOn) ? "0" : "1");
-    	break;
-                
-	case SSI_INDEX_REIPPADDR:
-    		usnprintf(pcInsert, iInsertLen,  "%d.%d.%d.%d",
-                          ptrDeviceSettings->reipaddr[0],
-                          ptrDeviceSettings->reipaddr[1], 
-    			  ptrDeviceSettings->reipaddr[2], 
-    		          ptrDeviceSettings->reipaddr[3]);
-    	break;
-        case SSI_INDEX_SETT:
-                usnprintf(pcInsert, iInsertLen,  "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
-                          ptrDeviceSettings->dhcpOn,
-                          ptrDeviceSettings->ipaddr[0],
+        switch(iIndex)
+        {
+
+            case SSI_INDEX_REDIR:
+                usnprintf(pcInsert, iInsertLen,  "%d.%d.%d.%d", ptrDeviceSettings->ipaddr[0],
                           ptrDeviceSettings->ipaddr[1], 
-    			  ptrDeviceSettings->ipaddr[2], 
-    		          ptrDeviceSettings->ipaddr[3],
-    		          ptrDeviceSettings->port,
-                          ptrDeviceSettings->nmask[0],
-                          ptrDeviceSettings->nmask[1],
-                          ptrDeviceSettings->nmask[2],
-                          ptrDeviceSettings->nmask[3],
-                          ptrDeviceSettings->gw[0],
-                          ptrDeviceSettings->gw[1],
-                          ptrDeviceSettings->gw[2],
-                          ptrDeviceSettings->gw[3],
-                          ptrDeviceSettings->pr,
-                          ptrDeviceSettings->reipaddr[0],
-                          ptrDeviceSettings->reipaddr[1],
-                          ptrDeviceSettings->reipaddr[2],
-                          ptrDeviceSettings->reipaddr[3],
-                          ptrDeviceSettings->report,
-                          ptrDeviceSettings->mfEnabled
-                        );
-        break;
-        
-        case SSI_INDEX_MAC_LIST:
-            if(ptrDeviceSettings->macFilterListLen == 0){
-                usnprintf(pcInsert, iInsertLen,"");
-            }else{
-                usnprintf(pcInsert, iInsertLen, "%02X:%02X:%02X:%02X:%02X:%02X,%02X:%02X:%02X:%02X:%02X:%02X,%02X:%02X:%02X:%02X:%02X:%02X,%02X:%02X:%02X:%02X:%02X:%02X,%02X:%02X:%02X:%02X:%02X:%02X",
-                        (ptrDeviceSettings->macFilter[0]).macaddr[0],
-                        (ptrDeviceSettings->macFilter[0]).macaddr[1],
-                        (ptrDeviceSettings->macFilter[0]).macaddr[2],
-                        (ptrDeviceSettings->macFilter[0]).macaddr[3],
-                        (ptrDeviceSettings->macFilter[0]).macaddr[4],
-                        (ptrDeviceSettings->macFilter[0]).macaddr[5],
-                        (ptrDeviceSettings->macFilter[1]).macaddr[0],
-                        (ptrDeviceSettings->macFilter[1]).macaddr[1],
-                        (ptrDeviceSettings->macFilter[1]).macaddr[2],
-                        (ptrDeviceSettings->macFilter[1]).macaddr[3],
-                        (ptrDeviceSettings->macFilter[1]).macaddr[4],
-                        (ptrDeviceSettings->macFilter[1]).macaddr[5],
-                        (ptrDeviceSettings->macFilter[2]).macaddr[0],
-                        (ptrDeviceSettings->macFilter[2]).macaddr[1],
-                        (ptrDeviceSettings->macFilter[2]).macaddr[2],
-                        (ptrDeviceSettings->macFilter[2]).macaddr[3],
-                        (ptrDeviceSettings->macFilter[2]).macaddr[4],
-                        (ptrDeviceSettings->macFilter[2]).macaddr[5],
-                        (ptrDeviceSettings->macFilter[3]).macaddr[0],
-                        (ptrDeviceSettings->macFilter[3]).macaddr[1],
-                        (ptrDeviceSettings->macFilter[3]).macaddr[2],
-                        (ptrDeviceSettings->macFilter[3]).macaddr[3],
-                        (ptrDeviceSettings->macFilter[3]).macaddr[4],
-                        (ptrDeviceSettings->macFilter[3]).macaddr[5]
-                );
-            }
-        break;
-        
-        case  SSI_INDEX_REPORT:
-    		usnprintf(pcInsert, iInsertLen,"%d", ptrDeviceSettings->report);
-    	break; 
-    
-    }
+                          ptrDeviceSettings->ipaddr[2], 
+                          ptrDeviceSettings->ipaddr[3]);  
+
+
+                ptrDeviceSettings->setIpConfig=1;
+            break;
+
+            case SSI_INDEX_IPADDR:
+                    usnprintf(pcInsert, iInsertLen,  "%d.%d.%d.%d", ptrDeviceSettings->ipaddr[0],
+                                                                                                  ptrDeviceSettings->ipaddr[1], 
+                                                                                                  ptrDeviceSettings->ipaddr[2], 
+                                                                                                  ptrDeviceSettings->ipaddr[3]);
+            break;
+
+            case SSI_INDEX_NMASK:
+                    usnprintf(pcInsert, iInsertLen,  "%d.%d.%d.%d", ptrDeviceSettings->nmask[0],
+                                                                                                  ptrDeviceSettings->nmask[1], 
+                                                                                                  ptrDeviceSettings->nmask[2], 
+                                                                                                  ptrDeviceSettings->nmask[3]);
+            break;
+
+            case SSI_INDEX_GW:
+                    usnprintf(pcInsert, iInsertLen,  "%d.%d.%d.%d", ptrDeviceSettings->gw[0],
+                                                                                                  ptrDeviceSettings->gw[1], 
+                                                                                                  ptrDeviceSettings->gw[2], 
+                                                                                                  ptrDeviceSettings->gw[3]);
+            break;
+
+            case SSI_INDEX_MACADDR:
+                    usnprintf(pcInsert, iInsertLen,  "%02X-%02X-%02X-%02X-%02X-%02X", 
+                    ptrDeviceSettings->macaddr[0],
+                    ptrDeviceSettings->macaddr[1],
+                    ptrDeviceSettings->macaddr[2],
+                    ptrDeviceSettings->macaddr[3],
+                    ptrDeviceSettings->macaddr[4],
+                    ptrDeviceSettings->macaddr[5]);
+            break;
+
+
+
+            case SSI_INDEX_DHCP:
+                    usnprintf(pcInsert, iInsertLen, (ptrDeviceSettings->dhcpOn) ? "0" : "1");
+            break;
+
+            case SSI_INDEX_REIPPADDR:
+                    usnprintf(pcInsert, iInsertLen,  "%d.%d.%d.%d",
+                              ptrDeviceSettings->reipaddr[0],
+                              ptrDeviceSettings->reipaddr[1], 
+                              ptrDeviceSettings->reipaddr[2], 
+                              ptrDeviceSettings->reipaddr[3]);
+            break;
+            case SSI_INDEX_SETT:
+                    usnprintf(pcInsert, iInsertLen,  "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
+                              ptrDeviceSettings->dhcpOn,
+                              ptrDeviceSettings->ipaddr[0],
+                              ptrDeviceSettings->ipaddr[1], 
+                              ptrDeviceSettings->ipaddr[2], 
+                              ptrDeviceSettings->ipaddr[3],
+                              ptrDeviceSettings->port,
+                              ptrDeviceSettings->nmask[0],
+                              ptrDeviceSettings->nmask[1],
+                              ptrDeviceSettings->nmask[2],
+                              ptrDeviceSettings->nmask[3],
+                              ptrDeviceSettings->gw[0],
+                              ptrDeviceSettings->gw[1],
+                              ptrDeviceSettings->gw[2],
+                              ptrDeviceSettings->gw[3],
+                              ptrDeviceSettings->pr,
+                              ptrDeviceSettings->reipaddr[0],
+                              ptrDeviceSettings->reipaddr[1],
+                              ptrDeviceSettings->reipaddr[2],
+                              ptrDeviceSettings->reipaddr[3],
+                              ptrDeviceSettings->report,
+                              ptrDeviceSettings->mfEnabled
+                            );
+            break;
+
+            case SSI_INDEX_MAC_LIST:
+                if(ptrDeviceSettings->macFilterListLen == 0){
+                    usnprintf(pcInsert, iInsertLen,"");
+                }else{
+                    for(volatile int i=0;i<ptrDeviceSettings->macFilterListLen;i++){
+                            usnprintf(pcInsert+(18*i), iInsertLen, "%02X:%02X:%02X:%02X:%02X:%02X,",
+                                (ptrDeviceSettings->macFilter[i]).macaddr[0],
+                                (ptrDeviceSettings->macFilter[i]).macaddr[1],
+                                (ptrDeviceSettings->macFilter[i]).macaddr[2],
+                                (ptrDeviceSettings->macFilter[i]).macaddr[3],
+                                (ptrDeviceSettings->macFilter[i]).macaddr[4],
+                                (ptrDeviceSettings->macFilter[i]).macaddr[5]);
+
+                    }
+                }
+            break;
+
+            case  SSI_INDEX_REPORT:
+                    usnprintf(pcInsert, iInsertLen,"%d", ptrDeviceSettings->report);
+            break; 
+
+            case SSI_INDEX_FPGA_FW_VERSION:
+                    usnprintf(pcInsert, iInsertLen,FPGA_FW_VERSION);
+            break;
+
+            case SSI_INDEX_MCU_FW_VERSION:
+                    usnprintf(pcInsert, iInsertLen,MCU_FW_VERSION);
+            break;
+
+            case SSI_INDEX_DATE:
+                    usnprintf(pcInsert, iInsertLen, "2013-Feb-22");
+            break;
+
+        }
     }
     return(strlen(pcInsert));
 } 
@@ -241,14 +211,7 @@ int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
 
 char *StatusCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
 {
-    (ptrDeviceSettings->channelSettings[0]).state = OK;
-    (ptrDeviceSettings->channelSettings[1]).state = FE;
-    (ptrDeviceSettings->channelSettings[2]).state = PE;
-    (ptrDeviceSettings->channelSettings[3]).state = FP;
-    (ptrDeviceSettings->channelSettings[4]).state = OK;
-    (ptrDeviceSettings->channelSettings[5]).state = OK;
-    (ptrDeviceSettings->channelSettings[6]).state = OK;
-    (ptrDeviceSettings->channelSettings[7]).state = OK;
+    //(ptrDeviceSettings->channelSettings[0]).controlReg[1] = 1;
     DebugMsg("\nEntering status clear\n");
    return(STATUS_CGI_RESPONSE);
 }
@@ -260,29 +223,54 @@ char *StatusCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValu
  ******************************************************************************/
 char *MacAddCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
 {
-    char mac1,mac2,mac3,mac4,mac5,mac6;
+    long mac1,mac2,mac3,mac4,mac5,mac6;
+    char pcDecodedString[32];
+    unsigned char chn;
     
-        mac1 = FindCGIParameter("mac1", pcParam, iNumParams);
-        mac2 = FindCGIParameter("mac2", pcParam, iNumParams);
-        mac3 = FindCGIParameter("mac3", pcParam, iNumParams);
-        mac4 = FindCGIParameter("mac4", pcParam, iNumParams);
-        mac5 = FindCGIParameter("mac5", pcParam, iNumParams);
-        mac6 = FindCGIParameter("mac6", pcParam, iNumParams);
-    
+    mac1 = FindCGIParameter("mac1", pcParam, iNumParams);
+    mac2 = FindCGIParameter("mac2", pcParam, iNumParams);
+    mac3 = FindCGIParameter("mac3", pcParam, iNumParams);
+    mac4 = FindCGIParameter("mac4", pcParam, iNumParams);
+    mac5 = FindCGIParameter("mac5", pcParam, iNumParams);
+    mac6 = FindCGIParameter("mac6", pcParam, iNumParams);
     if(mac1 == -1 || mac2 == -1 || mac3 == -1 || mac4 == -1 || mac5 == -1 || mac6 == -1) {
         return(PARAM_ERROR_RESPONSE);
     }
+    
     if(ptrDeviceSettings->macFilterListLen >= MAC_LIST_SZIZE ){
         ptrDeviceSettings->macFilterListLen = MAC_LIST_SZIZE - 1;
-    } else {
-        ptrDeviceSettings->macFilterListLen++;
     }
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[0] = mac1;
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[1] = mac2;
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[2] = mac3;
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[3] = mac4;
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[4] = mac5;
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[5] = mac6;
+    DecodeFormString(pcValue[mac1], pcDecodedString, 32);
+    chn = (unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[0] = chn;
+    
+    DecodeFormString(pcValue[mac2], pcDecodedString, 32);
+    chn = (unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[1] = chn;
+    
+    DecodeFormString(pcValue[mac3], pcDecodedString, 32);
+    chn = (unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[2] = chn;
+    
+    DecodeFormString(pcValue[mac4], pcDecodedString, 32);
+    chn=(unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[3] = chn;
+    
+    DecodeFormString(pcValue[mac5], pcDecodedString, 32);
+    chn=(unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[4] = chn;
+    
+    DecodeFormString(pcValue[mac6], pcDecodedString, 32);
+    chn=(unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[5] = chn;
+    
+    ptrDeviceSettings->macFilterListLen++;
+    
+    if(!Settings_Write(ptrDeviceSettings)) {
+        DebugMsg("Save to Flash failed!!\n"); 
+    } else {
+        DebugMsg("Setting saved to Flash memory\n");
+    }
     return(SETTINGS_CGI_RESPONSE);
 }
 
@@ -292,12 +280,12 @@ char *MacAddCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValu
 char *ClearMacCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
 {
     for(int i=0;i<MAC_LIST_SZIZE;i++){
-        (ptrDeviceSettings->macFilter[0]).macaddr[0] = 0;
-        (ptrDeviceSettings->macFilter[0]).macaddr[1] = 0;
-        (ptrDeviceSettings->macFilter[0]).macaddr[2] = 0;
-        (ptrDeviceSettings->macFilter[0]).macaddr[3] = 0;
-        (ptrDeviceSettings->macFilter[0]).macaddr[4] = 0;
-        (ptrDeviceSettings->macFilter[0]).macaddr[5] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr[0] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr[1] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr[2] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr[3] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr[4] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr[5] = 0;
     }
     ptrDeviceSettings->macFilterListLen = 0;
     return(SETTINGS_CGI_RESPONSE);

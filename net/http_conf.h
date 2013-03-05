@@ -2,7 +2,7 @@
 #define HTTP_CONF_H_
 
 #include "utils/lwiplib.h"
-#include "httpserver_raw/httpd.h"
+#include "httpd.h"
 
 #define SSI_INDEX_STATE    0
 #define SSI_INDEX_MACADDR  1
@@ -21,8 +21,13 @@
 #define SSI_INDEX_SETT 12
 
 #define SSI_INDEX_CHN_STATE_LOW 13
-#define SSI_INDEX_CHN_STATE_HIGH 21
-#define SSI_INDEX_ERRMSG        22
+#define SSI_INDEX_CHN_STATE_HIGH 20
+#define SSI_INDEX_ERRMSG        21
+#define SSI_INDEX_MCU_FW_VERSION 22
+#define SSI_INDEX_FPGA_FW_VERSION 23
+#define SSI_INDEX_DATE 24
+#define SSI_INDEX_ID 25
+#define SSI_INDEX_SN 26
 
 static const char *g_pcConfigSSITags[] = 
 {
@@ -47,7 +52,12 @@ static const char *g_pcConfigSSITags[] =
 "ch6state",
 "ch7state",
 "ch8state",
-"errmsg"
+"errmsg",
+"mcufwv",
+"fpgafwv",
+"date",
+"id",
+"sn"
 };
 
 void HttpdInit(tDeviceSettings *ptr);
@@ -77,7 +87,7 @@ static const tCGI g_psConfigCGIURIs[] =
 #define NUM_CONFIG_CGI_URIS     (sizeof(g_psConfigCGIURIs) / sizeof(tCGI))
 #define DEFAULT_CGI_RESPONSE    "/index.shtml"
 #define SETTINGS_CGI_RESPONSE    "/settings.shtml"
-#define PARAM_ERROR_RESPONSE    "/perror.htm"
+#define PARAM_ERROR_RESPONSE    "/prerror.htm"
 #define REDIR_CGI_RESPONSE      "/redir.shtml"
 #define STATUS_CGI_RESPONSE      "/status.shtml"
 

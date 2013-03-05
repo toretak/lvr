@@ -23,25 +23,27 @@ gcc/device.o: device.c \
  /home/toretak/stellaris/stellarisware/driverlib/sysctl.h \
  /home/toretak/stellaris/stellarisware/driverlib/systick.h \
  /home/toretak/stellaris/stellarisware/driverlib/timer.h \
- utils/softeeprom.h device.h net/http_conf.h \
- /home/toretak/stellaris/stellarisware/utils/lwiplib.h \
+ utils/softeeprom.h \
+ /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/netif/etharp.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/opt.h \
  lwipopts.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/debug.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/arch.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/ports/stellaris/include/arch/cc.h \
+ /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/pbuf.h \
+ /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/err.h \
+ /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/ipv4/lwip/ip_addr.h \
+ /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/ipv4/lwip/inet.h \
+ /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/netif.h \
+ /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/ipv4/lwip/ip.h \
+ /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/def.h \
+ device.h net/http_conf.h \
+ /home/toretak/stellaris/stellarisware/utils/lwiplib.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/api.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/netifapi.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/tcp.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/sys.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/mem.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/pbuf.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/err.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/ipv4/lwip/ip.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/def.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/ipv4/lwip/ip_addr.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/ipv4/lwip/inet.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/netif.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/ipv4/lwip/icmp.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/udp.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/tcpip.h \
@@ -49,5 +51,5 @@ gcc/device.o: device.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/stats.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/memp.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/memp_std.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/apps/httpserver_raw/httpd.h \
- net/ethernetwrapper.h net/../device.h myutils/crc.h myutils/uartstdio.h
+ net/httpd.h net/ethernetwrapper.h net/../device.h myutils/crc.h \
+ myutils/uartstdio.h

@@ -38,6 +38,8 @@
 #include "driverlib/timer.h"
 
 #include "utils/softeeprom.h"
+
+#include "netif/etharp.h"
 // PROJECT INCLUDES
 #include "device.h"
 #include "net/http_conf.h"
@@ -219,6 +221,11 @@ int Settings_Default(tDeviceSettings *sett)
         sett->mfEnabled = 0;                            //disable mac filter
         sett->setIpConfig=0;                            //unset changing IP flag
         sett->macFilterListLen = 0;        //clear mac filter list
+        for (int i=0;i<CHANNELS;i++){
+            sett->channelSettings[i].controlReg = 0b00011001;
+            sett->channelSettings[i].frameSelReg = 0b10110000;
+        }
+        
         //
         //Save Default setting to Flash memory
         //
@@ -259,7 +266,7 @@ int Settings_Read(tDeviceSettings *sett)
       }
       
       //if read is succesfull than check founded data
-      if(found==1)
+      if(found==true)
       {
         ptr_sett[id]=data;        
         crc = update_crc(crc, ptr_sett[id]);
@@ -297,8 +304,7 @@ int Settings_Read(tDeviceSettings *sett)
     }
         
     
-    DebugMsg("State=%d, IP=%d.%d.%d.%d\n",sett->state,   
-             sett->ipaddr[0], sett->ipaddr[1],sett->ipaddr[2],sett->ipaddr[3]);
+    DebugMsg("IP=%d.%d.%d.%d\n", sett->ipaddr[0], sett->ipaddr[1],sett->ipaddr[2],sett->ipaddr[3]);
     
     DebugMsg("Mask=%d.%d.%d.%d, GW=%d.%d.%d.%d\n",sett->nmask[0],
              sett->nmask[1],sett->nmask[2],sett->nmask[3],
@@ -340,6 +346,24 @@ void SysTickIntHandler(void)
     //
     lwIPTimer(SYSTICKMS);
 }
+void Timer0IntHandler(void)
+{
+    // Clear the timer interrupt.
+    TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);    
+
+    // Read the current state of the output
+    long pin_status;
+    pin_status=GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_0);
+    
+    // Toggle Bit 0
+    pin_status^=GPIO_PIN_0;
+    
+    // Write the result back into the GPIO Pin 0 Data Register
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, pin_status);
+
+    etharp_tmr();
+    DebugMsg("Arp timer \n");
+}
 
 void Button_init(void)
 {
@@ -380,7 +404,7 @@ int main(void)
     //
     if(Settings_Init() == 0)
     {
-      DebugMsg("!!!FATAL cano't initialize soft EEPROM\n");
+      DebugMsg("!!!FATAL can't initialize soft EEPROM\n");
       while(1);
     
     }
@@ -402,16 +426,17 @@ int main(void)
     //
     // Set default settings if Reset button has been pressed.
     //
+    /*
     if(GPIOPinRead(BUTTON_IO) == 0)
     {
       DebugMsg("Button was push and Settings is Default\n");
       Settings_Default(&deviceSettings);
     }
-
+*/
 
         
     DebugMsg("\nstarting ... \n");
-    DebugMsg("System clock = %d Hz\n", SysCtlClockGet());
+    DebugMsg("System clock = %d Hz\n", 5/SysCtlClockGet());
 	
   
     //
@@ -419,11 +444,6 @@ int main(void)
     //
     EthernetPeriphInit(); 
     
-    //
-    // Enable processor interrupts.
-    //
-    IntMasterEnable();
-
     //
     // Set Ethernet MAC address
     //
@@ -439,12 +459,35 @@ int main(void)
     //                    
     HttpdInit(&deviceSettings);  
     DebugMsg("\nstarting HTTPD \t\t\t\t\t[OK]");
+    
+    
+        //initialize arp table
+    etharp_init();
+    DebugMsg("\nEthArp initialized \t\t\t\t[OK]\n");
+    //enable timer for etharp_tmr
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+
+    TimerConfigure(TIMER0_BASE, TIMER_CFG_32_BIT_PER);
+    // Set Timer0 period as 1/4 of the system clock, i.e. 4 interrupts per second
+    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet());
+
+    // Configure the timer to generate an interrupt on time-out
+    TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);    
+    // Enable the Timer Interrupt in the NVIC
+    IntEnable(INT_TIMER0A);
+    // Enable the timer
+    TimerEnable(TIMER0_BASE, TIMER_A);
+    
+    //
+    // Enable processor interrupts.
+    //
+    IntMasterEnable();
     ledgreen_pinset(1);  
     //
     // Loop forever.  All the work is done in interrupt handlers.
     //
     while(1)
-    {
+    {        
 /*
         if(deviceSettings.setIpConfig==1)
         { 

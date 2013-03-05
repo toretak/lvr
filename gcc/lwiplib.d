@@ -91,6 +91,7 @@ gcc/lwiplib.o: /home/toretak/stellaris/stellarisware/utils/lwiplib.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/core/snmp/msg_in.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/core/snmp/msg_out.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/netif/etharp.c \
+ device.h /home/toretak/stellaris/stellarisware/inc/hw_types.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/netif/loopif.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/netif/ppp/auth.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/netif/ppp/chap.c \
@@ -107,7 +108,6 @@ gcc/lwiplib.o: /home/toretak/stellaris/stellarisware/utils/lwiplib.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/netif/ppp/vj.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/ports/stellaris/perf.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/ports/stellaris/sys_arch.c \
- /home/toretak/stellaris/stellarisware/inc/hw_types.h \
  /home/toretak/stellaris/stellarisware/driverlib/interrupt.h \
  /home/toretak/stellaris/stellarisware/driverlib/rom.h \
  /home/toretak/stellaris/stellarisware/driverlib/rom_map.h \

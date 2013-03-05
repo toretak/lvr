@@ -37,8 +37,7 @@ gcc/net/http_conf.o: net/http_conf.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/stats.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/memp.h \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/lwip/memp_std.h \
- /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/apps/httpserver_raw/httpd.h \
- /home/toretak/stellaris/stellarisware/utils/ustdlib.h \
+ net/httpd.h /home/toretak/stellaris/stellarisware/utils/ustdlib.h \
  /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/include/stdarg.h \
  net/../myutils/uartstdio.h net/../device.h \
  /home/toretak/stellaris/stellarisware/inc/hw_types.h net/http_conf.h \

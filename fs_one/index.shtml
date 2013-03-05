@@ -1,11 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>AES</title><link rel="stylesheet" type="text/css" href="style/style.css" />
+<html><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><title>AES1 1CH - Channel settings</title><link rel="stylesheet" type="text/css" href="style/style.css" />
 <script language="javascript">
   window.history.forward(1);
  
 </script></head><body>
 <div id="content">
-<h1>Channel settings</h1>
+<h1>AES1 1CH - Channel settings</h1>
+<p>MCU FW <!--#mcufwv-->, FPGA FW <!--#fpgafwv-->, <!--#date--></p>
+<p>ID: <!--#id-->, SN: <!--#sn--></p>
 <form method="get" action="channelsettings.cgi">
     <div class="channel">
     <input type="hidden" name="ch" id="ch1" value="1"/>
@@ -13,8 +15,7 @@
     <strong>Channel</strong> <input type="radio" name="en" id="enabled_true" value="true" checked/><label for="enabled_true">enabled</label> <input type="radio" name="en" id="enabled_false" value="false" /><label for="enabled_false">disabled</label><br />
     <strong>Baud rate</strong> <input type="radio" name="br" value="50" id="br_50" /> <label for="br_50">50</label> <input type="radio" name="br" value="78" id="br_78" /> <label for="br_78">78</label> <input type="radio" name="br" value="110" id="br_110" /> <label for="br_110">110</label> <input type="radio" name="br" value="150" id="br_150" /> <label for="br_150">150</label> 
     <input type="radio" name="br" value="300" id="br_300" /> <label for="br_300">300</label> <input type="radio" name="br" value="600" id="br_600" /> <label for="br_600">600</label> <input type="radio" name="br" value="1200" id="br_1200" /> <label for="br_1200">1 200</label> <input type="radio" name="br" value="2400" id="br_2400" /> <label for="br_2400">2 400</label> 
-    <input type="radio" name="br" value="4800" id="br_4800" /> <label for="br_4800">4 800</label> <input type="radio" name="br" value="9600" id="br_9600" checked/> <label for="br_9600">9600</label> <input type="radio" name="br" value="19200" id="br_19200" /> <label for="br_19200">19 200</label> <input type="radio" name="br" value="28800" id="br_28800" /> <label for="br_28800">28 800</label> <input type="radio" name="br" value="38400" id="br_38400" /> <label for="br_38400">38 400</label> 
-    <input type="radio" name="br" value="57600" id="br_57600" /> <label for="br_57600">57 600</label> <input type="radio" name="br" value="115200" id="br_115200" /> <label for="br_115200">115 200</label> <br />
+    <input type="radio" name="br" value="4800" id="br_4800" /> <label for="br_4800">4 800</label> <input type="radio" name="br" value="9600" id="br_9600" checked/> <label for="br_9600">9600</label>  <br />
     <strong>Frame settings</strong>
     <strong>Data bits</strong>
     <input type="radio" name="db" id="db_5" value="5"/><label for="db_5">5</label>

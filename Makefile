@@ -104,8 +104,8 @@ ${COMPILER}/enet_io.axf: ${COMPILER}/utils/softeeprom.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/net/cgifuncs.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/net/ethernetwrapper.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/net/http_conf.o
+${COMPILER}/enet_io.axf: ${COMPILER}/net/httpd.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/device.o
-${COMPILER}/enet_io.axf: ${COMPILER}/httpd.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/lmi_fs.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/locator.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/lwiplib.o
