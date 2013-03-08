@@ -1131,14 +1131,13 @@ http_poll(void *arg, struct tcp_pcb *pcb)
       send_data(pcb, hs);
     }
   }
-/*
+
    struct netif * tnetif;
    struct eth_addr * adr;
    struct ip_addr * ip;
    int arp_find = etharp_find_addr(tnetif, &(pcb->remote_ip), adr, ip);
    DebugMsg("%02X:%02X:%02X:%02X:%02X",adr[0],adr[1],adr[2],adr[3],adr[4],adr[5]);
-*/
-  findMe();
+
   return ERR_OK;
 }
 /*-----------------------------------------------------------------------------------*/

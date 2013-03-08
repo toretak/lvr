@@ -2,6 +2,8 @@
 #ifndef DEVICE_H_
 #define DEVICE_H_
 
+#define ONE_CHANNEL
+
 #include "inc/hw_types.h"
 
 //*****************************************************************************

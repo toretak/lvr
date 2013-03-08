@@ -15,11 +15,7 @@
         </df>
       </df>
       <df name="gcc">
-      </df>
-      <df name="gcc">
         <df name="myutils">
-          <in>crc.d</in>
-          <in>uartstdio.d</in>
         </df>
         <df name="net">
         </df>

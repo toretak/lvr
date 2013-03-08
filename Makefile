@@ -94,10 +94,12 @@ ${COMPILER}:
 	@mkdir -p ${COMPILER}/utils
 	@mkdir -p ${COMPILER}/myutils
 	@mkdir -p ${COMPILER}/net
+	@mkdir -p ${COMPILER}/fpga
 
 #
 # Rules for building the Sample Ethernet I/O Control Application using lwIP 1.3.2.
 #
+${COMPILER}/enet_io.axf: ${COMPILER}/fpga/FPGA_IO.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/myutils/uartstdio.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/myutils/crc.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/utils/softeeprom.o

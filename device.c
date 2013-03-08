@@ -47,6 +47,8 @@
 #include "myutils/crc.h"
 #include "myutils/uartstdio.h"
 
+#include "fpga/fpga_defs.h"
+#include "net/tcp_conn.h"
 //*****************************************************************************
 //
 //!
@@ -436,7 +438,7 @@ int main(void)
 
         
     DebugMsg("\nstarting ... \n");
-    DebugMsg("System clock = %d Hz\n", 5/SysCtlClockGet());
+    DebugMsg("System clock = %d Hz\n", SysCtlClockGet());
 	
   
     //
@@ -460,6 +462,9 @@ int main(void)
     HttpdInit(&deviceSettings);  
     DebugMsg("\nstarting HTTPD \t\t\t\t\t[OK]");
     
+    //initialize AFTN ethernet
+    tcpConnInit();
+    DebugMsg("\nstarting AFTN \t\t\t\t\t[OK]");
     
         //initialize arp table
     etharp_init();
@@ -486,8 +491,27 @@ int main(void)
     //
     // Loop forever.  All the work is done in interrupt handlers.
     //
+    tcp_output_counter = 0;
     while(1)
     {        
+        //process tcp communication
+        char channel = check_for_new_message();
+        if (channel < 8) {
+            TCP_frame_load_new_message(channel, tcp_output_buffer[tcp_output_counter].TCP_frame, &tcp_output_buffer[tcp_output_counter].TCP_frame_length);
+            tcp_output_counter++;
+            if(tcp_output_counter >= OUTPUT_TCP_BUFFER_SIZE){
+                tcp_output_counter = 0;
+            }
+        }
+        if(out_flag == 1){
+	  //if(get_channel_ready(0)){
+            for(i = 0;i < output_buffer_length;i++){
+                send_data_TX(0, output_buffer[i]);
+            }
+            out_flag = 0;
+	  //}
+        }
+        //
 /*
         if(deviceSettings.setIpConfig==1)
         { 
