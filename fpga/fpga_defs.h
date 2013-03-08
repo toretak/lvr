@@ -66,8 +66,6 @@
 
 
 #define OUTPUT_TCP_BUFFER_SIZE  10
-#endif
-
 
 struct tcp_frm{
     // buffer, where the TCP frame is stored during sending TCP frames to all data clients
@@ -91,3 +89,4 @@ typedef struct{
 struct tcp_conn_app_state{
     int sent_messages;
 };
+#endif

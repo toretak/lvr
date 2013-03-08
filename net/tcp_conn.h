@@ -9,8 +9,8 @@
 #define	TCP_CONN_H
 
 
+void tcpConnInit();
 
 #endif	/* TCP_CONN_H */
 
-void tcpConnInit();
 

@@ -15,7 +15,7 @@
  * channel selection [00XX X000] - select channel number
  * reserved [XX00 0000]
  */
-#include "globalDefinitions.h"
+#include "fpga_defs.h"
 #include "inc/hw_types.h"
 #include "driverlib/gpio.h"
 #include "inc/hw_memmap.h"
