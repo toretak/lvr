@@ -149,17 +149,17 @@ tcp_conn_accept(void *arg, struct tcp_pcb *pcb, err_t err) {
     return ERR_OK;
 }
 
-void tcpConnInit() {
+void tcpConnInit(tDeviceSettings *sett) {
     struct tcp_pcb *pcb;
 
-    DebugMsg("tcp 3327 init\n");
+    DebugMsg("tcp %d init\n",sett->port);
 
     pcb = tcp_new();
-    tcp_bind(pcb, IP_ADDR_ANY, 3327);
+    tcp_bind(pcb, IP_ADDR_ANY, sett->port);
     pcb = tcp_listen(pcb);
     tcp_accept(pcb, tcp_conn_accept);
 
-    DebugMsg("tcp 3327 init finished\n");
+    DebugMsg("tcp %d init finished\n",sett->port);
 
 }
 

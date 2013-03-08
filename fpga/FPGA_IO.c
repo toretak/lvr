@@ -16,6 +16,7 @@
  * reserved [XX00 0000]
  */
 #include "fpga_defs.h"
+#include "../device.h"
 #include "inc/hw_types.h"
 #include "driverlib/gpio.h"
 #include "inc/hw_memmap.h"
@@ -23,7 +24,7 @@
 #include "stdbool.h"
 #include "FPGA_IO.h"
 #include "httpserver_raw/httpd.h"
-#include "EEPROM_IO.h"
+//#include "EEPROM_IO.h"
 
 //****************************************************************************************************************************
 // Global variables for this module
@@ -70,7 +71,7 @@ void FPGA_interface_init(void) {
 // When in 8-channel mode, all channels are being reset by the one reset signal and it is sufficient to check for readiness of
 // a single channel.
 //****************************************************************************************************************************
-void FPGA_init()
+void FPGA_init(tDeviceSettings *sett)
 {
 	// set reset signal high and low to reset and return to normal operation
 	GPIOPinWrite(RESET_SIGNAL_PORT, RESET_SIGNAL, 0xff);
@@ -82,6 +83,8 @@ void FPGA_init()
 #ifdef ONE_CHANNEL
         control_reg_temp = 0x19;
         frame_sel_temp = 0x34;
+	control_reg_temp = (sett->channelSettings[0]).controlReg;
+	frame_sel_temp = (sett->channelSettings[0]).frameSelReg;
 	//EEPROM_retrieve_channel_settings(0, &control_reg_temp, &frame_sel_temp);
 	send_control_reg_raw(0, control_reg_temp);
 	send_frame_sel_raw(0, frame_sel_temp);
@@ -92,7 +95,9 @@ void FPGA_init()
 #else
 	volatile int i;
 	for (i = 0; i < 8; i++) {
-		EEPROM_retrieve_channel_settings((char)i, &control_reg_temp, &frame_sel_temp);
+		control_reg_temp = (sett->channelSettings[i]).controlReg;
+		frame_sel_temp = (sett->channelSettings[i]).frameSelReg;
+		//EEPROM_retrieve_channel_settings((char)i, &control_reg_temp, &frame_sel_temp);
 		send_control_reg_raw(i, control_reg_temp);
 		send_frame_sel_raw((char)i, frame_sel_temp);
 		clear_error_flag(i);
@@ -206,7 +211,8 @@ void send_channel_settings(char channel, bool reset, bool enable_channel, char b
 	temp_frame_reg_storage |= temp_frame_reg;
 
 	// save both registers to EEPROM
-	EEPROM_save_channel_settings(channel, temp_control_reg_storage, temp_frame_reg_storage);
+	//save to eeprom is not necesary, because all setings are saved to struct and whole struct is saved to eeprom in http handler
+	//EEPROM_save_channel_settings(channel, temp_control_reg_storage, temp_frame_reg_storage);
 }
 
 //****************************************************************************************************************************

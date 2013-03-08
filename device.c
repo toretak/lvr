@@ -462,8 +462,14 @@ int main(void)
     HttpdInit(&deviceSettings);  
     DebugMsg("\nstarting HTTPD \t\t\t\t\t[OK]");
     
+    //initialize fpga
+    DebugMsg("\ninitializing FPGA communication \t\t\t[OK]");
+    FPGA_interface_init();
+    FPGA_init(&deviceSettings);
+    DebugMsg("[OK]");
+    
     //initialize AFTN ethernet
-    tcpConnInit();
+    tcpConnInit(&deviceSettings);
     DebugMsg("\nstarting AFTN \t\t\t\t\t[OK]");
     
         //initialize arp table
@@ -505,7 +511,7 @@ int main(void)
         }
         if(out_flag == 1){
 	  //if(get_channel_ready(0)){
-            for(i = 0;i < output_buffer_length;i++){
+            for(int i = 0;i < output_buffer_length;i++){
                 send_data_TX(0, output_buffer[i]);
             }
             out_flag = 0;

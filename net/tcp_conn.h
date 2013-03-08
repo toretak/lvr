@@ -9,7 +9,7 @@
 #define	TCP_CONN_H
 
 
-void tcpConnInit();
+void tcpConnInit(tDeviceSettings *sett);
 
 #endif	/* TCP_CONN_H */
 

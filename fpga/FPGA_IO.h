@@ -66,7 +66,7 @@
 // declarations
 //*****************************************************************************
 void FPGA_interface_init(void);
-void FPGA_init();
+void FPGA_init(tDeviceSettings *sett);
 void send_channel_settings(char channel, bool reset, bool enable_channel, char baud_rate, char control_reg_mask, char data_bits, char stop_bits, char parity, char frame_sel_mask);
 void send_control_reg(char channel, bool reset, bool enable_channel, bool clear_error_flag, bool clear_new_message_flag, char baud_rate, char mask);
 void send_control_reg_raw(char channel, char control_reg);
