@@ -1132,12 +1132,6 @@ http_poll(void *arg, struct tcp_pcb *pcb)
     }
   }
 
-   struct netif * tnetif;
-   struct eth_addr * adr;
-   struct ip_addr * ip;
-   int arp_find = etharp_find_addr(tnetif, &(pcb->remote_ip), adr, ip);
-   DebugMsg("%02X:%02X:%02X:%02X:%02X",adr[0],adr[1],adr[2],adr[3],adr[4],adr[5]);
-
   return ERR_OK;
 }
 /*-----------------------------------------------------------------------------------*/
@@ -1407,7 +1401,14 @@ http_accept(void *arg, struct tcp_pcb *pcb, err_t err)
     LWIP_DEBUGF(HTTPD_DEBUG, ("http_accept: Out of memory\n"));
     return ERR_MEM;
   }
+//MAC FILTER COULD BE IMPLEMENTED HERE
+   struct netif * tnetif;
+   struct eth_addr * adr;
+   struct ip_addr * ip;
+   int arp_find = etharp_find_addr(tnetif, &(pcb->remote_ip), adr, ip);
+   DebugMsg("%02X:%02X:%02X:%02X:%02X",adr[0],adr[1],adr[2],adr[3],adr[4],adr[5]);
 
+  
   /* Initialize the structure. */
   hs->handle = NULL;
   hs->file = NULL;

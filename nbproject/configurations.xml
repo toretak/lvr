@@ -19,6 +19,19 @@
         <df name="style">
         </df>
       </df>
+      <df name="gcc">
+        <df name="fpga">
+          <in>FPGA_IO.d</in>
+        </df>
+        <df name="myutils">
+          <in>crc.d</in>
+          <in>uartstdio.d</in>
+        </df>
+        <df name="net">
+        </df>
+        <df name="utils">
+        </df>
+      </df>
       <df name="myutils">
         <in>crc.c</in>
         <in>crc.h</in>

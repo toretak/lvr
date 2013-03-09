@@ -18,7 +18,7 @@ static err_t tcp_send(struct tcp_pcb *pcb, const void *data, u16_t len) {
 
 static err_t tcp_conn_poll(void *arg, struct tcp_pcb *pcb) {
 
-    DebugMsg("Polll 3327\n");
+    DebugMsg("TCP Polll\n");
 
     if (pcb->state == ESTABLISHED) {
         int message_sent_counter = ((struct tcp_conn_app_state *) arg)->sent_messages;
