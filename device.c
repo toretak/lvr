@@ -463,11 +463,15 @@ int main(void)
     DebugMsg("\nstarting HTTPD \t\t\t\t\t[OK]");
     
     //initialize fpga
-    DebugMsg("\ninitializing FPGA communication \t\t\t[OK]");
+    DebugMsg("\ninitializing FPGA communication \t\t\t");
+#ifdef SIMULATION_MODE
+    
+    DebugMsg("[simulation mode]");
+#else
     FPGA_interface_init();
     FPGA_init(&deviceSettings);
     DebugMsg("[OK]");
-    
+#endif    
     //initialize AFTN ethernet
     tcpConnInit(&deviceSettings);
     DebugMsg("\nstarting AFTN \t\t\t\t\t[OK]");
@@ -501,6 +505,16 @@ int main(void)
     while(1)
     {        
         //process tcp communication
+#ifdef SIMULATION_MODE
+        if(tcp_output_counter == 0){
+            char str[] = "simulation mode";
+            for(int i=0;i<sizeof(str);i++){
+                tcp_output_buffer[tcp_output_counter].TCP_frame[i] = str[i];
+            }
+            tcp_output_buffer[tcp_output_counter].TCP_frame_length = sizeof(str);
+            tcp_output_counter = 1;
+        }
+#else
         char channel = check_for_new_message();
         if (channel < 8) {
             TCP_frame_load_new_message(channel, tcp_output_buffer[tcp_output_counter].TCP_frame, &tcp_output_buffer[tcp_output_counter].TCP_frame_length);
@@ -518,6 +532,7 @@ int main(void)
 	  //}
         }
         //
+#endif
 /*
         if(deviceSettings.setIpConfig==1)
         { 

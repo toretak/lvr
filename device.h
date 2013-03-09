@@ -3,6 +3,7 @@
 #define DEVICE_H_
 
 #define ONE_CHANNEL
+#define SIMULATION_MODE
 
 #include "inc/hw_types.h"
 
