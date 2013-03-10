@@ -103,6 +103,7 @@ ${COMPILER}/enet_io.axf: ${COMPILER}/fpga/FPGA_IO.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/myutils/uartstdio.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/myutils/crc.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/utils/softeeprom.o
+${COMPILER}/enet_io.axf: ${COMPILER}/utils/arp.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/net/cgifuncs.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/net/ethernetwrapper.o
 ${COMPILER}/enet_io.axf: ${COMPILER}/net/http_conf.o

@@ -97,6 +97,7 @@
 #include "netif/etharp.h"
 #include "lwip/netif.h"
 #include "device.h"
+#include "utils/arp.h"
 
 typedef struct
 {
@@ -1402,12 +1403,20 @@ http_accept(void *arg, struct tcp_pcb *pcb, err_t err)
     return ERR_MEM;
   }
 //MAC FILTER COULD BE IMPLEMENTED HERE
-   struct netif * tnetif;
+   struct netif tnetif;
    struct eth_addr * adr;
    struct ip_addr * ip;
-   int arp_find = etharp_find_addr(tnetif, &(pcb->remote_ip), adr, ip);
-   DebugMsg("%02X:%02X:%02X:%02X:%02X",adr[0],adr[1],adr[2],adr[3],adr[4],adr[5]);
-
+   DebugMsg("Trying to find mac for ip: %d.%d.%d.%d\n",ip4_addr1(&pcb->remote_ip),ip4_addr2(&pcb->remote_ip),ip4_addr3(&pcb->remote_ip),ip4_addr4(&pcb->remote_ip));
+   //etharp_query(&tnetif, &pcb->remote_ip, NULL);
+   int find = etharp_find_addr(&tnetif, &pcb->remote_ip, &adr, &ip);
+   if(find == ERR_OK){
+      char * mac;
+      mac2string(adr, mac);
+      DebugMsg("Found mac: %s :]\n",&mac);
+      DebugMsg("Found mac: %02X:%02X:%02X:%02X:%02X:%02X :]\n",&adr[0],&adr[1],&adr[2],&adr[3],&adr[4],&adr[5]);
+   } else {
+      DebugMsg("MAC not found :(\n");
+   }
   
   /* Initialize the structure. */
   hs->handle = NULL;

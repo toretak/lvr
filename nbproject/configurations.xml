@@ -21,11 +21,8 @@
       </df>
       <df name="gcc">
         <df name="fpga">
-          <in>FPGA_IO.d</in>
         </df>
         <df name="myutils">
-          <in>crc.d</in>
-          <in>uartstdio.d</in>
         </df>
         <df name="net">
         </df>
@@ -53,6 +50,8 @@
         <in>tcp_conn.h</in>
       </df>
       <df name="utils">
+        <in>arp.c</in>
+        <in>arp.h</in>
         <in>softeeprom.c</in>
         <in>softeeprom.h</in>
       </df>

@@ -224,8 +224,8 @@ int Settings_Default(tDeviceSettings *sett)
         sett->setIpConfig=0;                            //unset changing IP flag
         sett->macFilterListLen = 0;        //clear mac filter list
         for (int i=0;i<CHANNELS;i++){
-            sett->channelSettings[i].controlReg = 0b00011001;
-            sett->channelSettings[i].frameSelReg = 0b10110000;
+            sett->channelSettings[i].controlReg = 0x19;//0b00011001;
+            sett->channelSettings[i].frameSelReg = 0xB0;//0b10110000;
         }
         
         //
@@ -455,26 +455,26 @@ int main(void)
     // Initialize the lwIP library
     //                       
     IpStackInit(&deviceSettings);
-    DebugMsg("\nstarting stack library \t\t\t\t[OK]");
+    DebugMsg("\nstarting stack library \t\t\t\t[OK]\n");
     //
     // Initialize httpd server.
     //                    
     HttpdInit(&deviceSettings);  
-    DebugMsg("\nstarting HTTPD \t\t\t\t\t[OK]");
+    DebugMsg("\nstarting HTTPD \t\t\t\t\t[OK]\n");
     
     //initialize fpga
-    DebugMsg("\ninitializing FPGA communication \t\t\t");
+    DebugMsg("\ninitializing FPGA communication \t\t");
 #ifdef SIMULATION_MODE
     
-    DebugMsg("[simulation mode]");
+    DebugMsg("[simulation mode]\n");
 #else
     FPGA_interface_init();
     FPGA_init(&deviceSettings);
-    DebugMsg("[OK]");
+    DebugMsg("[OK]\n");
 #endif    
     //initialize AFTN ethernet
+    DebugMsg("\nstarting AFTN \t\t\t\t\t[OK]\n");
     tcpConnInit(&deviceSettings);
-    DebugMsg("\nstarting AFTN \t\t\t\t\t[OK]");
     
         //initialize arp table
     etharp_init();
@@ -506,7 +506,7 @@ int main(void)
     {        
         //process tcp communication
 #ifdef SIMULATION_MODE
-        if(tcp_output_counter == 0){
+        if(tcp_output_counter <= 0){
             char str[] = "simulation mode";
             for(int i=0;i<sizeof(str);i++){
                 tcp_output_buffer[tcp_output_counter].TCP_frame[i] = str[i];
