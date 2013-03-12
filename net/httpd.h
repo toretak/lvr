@@ -35,8 +35,8 @@
 
 #ifndef __HTTPD_H__
 #define __HTTPD_H__
-
-void httpd_init(void);
+#include "device.h"
+void httpd_init(tDeviceSettings *ptr);
 
 #ifdef INCLUDE_HTTPD_CGI
 

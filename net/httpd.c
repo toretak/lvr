@@ -97,7 +97,6 @@
 #include "netif/etharp.h"
 #include "lwip/netif.h"
 #include "device.h"
-#include "utils/arp.h"
 
 typedef struct
 {
@@ -112,6 +111,8 @@ const default_filename g_psDefaultFilenames[] = {
   {"/index.html", false },
   {"/index.htm", false }
 };
+
+tDeviceSettings *ptrDeviceSettings;
 
 #define NUM_DEFAULT_FILENAMES (sizeof(g_psDefaultFilenames) /                 \
                                sizeof(default_filename))
@@ -1402,22 +1403,32 @@ http_accept(void *arg, struct tcp_pcb *pcb, err_t err)
     LWIP_DEBUGF(HTTPD_DEBUG, ("http_accept: Out of memory\n"));
     return ERR_MEM;
   }
-//MAC FILTER COULD BE IMPLEMENTED HERE
-   struct netif tnetif;
-   struct eth_addr * adr;
-   struct ip_addr * ip;
-   DebugMsg("Trying to find mac for ip: %d.%d.%d.%d\n",ip4_addr1(&pcb->remote_ip),ip4_addr2(&pcb->remote_ip),ip4_addr3(&pcb->remote_ip),ip4_addr4(&pcb->remote_ip));
-   //etharp_query(&tnetif, &pcb->remote_ip, NULL);
-   int find = etharp_find_addr(&tnetif, &pcb->remote_ip, &adr, &ip);
-   if(find == ERR_OK){
-      char * mac;
-      mac2string(adr, mac);
-      DebugMsg("Found mac: %s :]\n",&mac);
-      DebugMsg("Found mac: %02X:%02X:%02X:%02X:%02X:%02X :]\n",&adr[0],&adr[1],&adr[2],&adr[3],&adr[4],&adr[5]);
-   } else {
-      DebugMsg("MAC not found :(\n");
-   }
-  
+//MAC FILTER 
+//neeed to find out, if MAC filter enabled
+  if(ptrDeviceSettings->mfEnabled == 1 || 1){
+    DebugMsg("MAC filter enabled\n");
+    struct netif tnetif;
+    struct eth_addr * adr;
+    struct ip_addr * ip;
+    DebugMsg("Trying to find mac for ip: %d.%d.%d.%d\n",ip4_addr1(&pcb->remote_ip),ip4_addr2(&pcb->remote_ip),ip4_addr3(&pcb->remote_ip),ip4_addr4(&pcb->remote_ip));
+    int find = etharp_find_addr(&tnetif, &pcb->remote_ip, &adr, &ip);
+    if(find == ERR_OK){
+	DebugMsg("Found mac: %02X:%02X:%02X:%02X:%02X:%02X :]\n",(*adr).addr[0],(*adr).addr[1],(*adr).addr[2],(*adr).addr[3],(*adr).addr[4],(*adr).addr[5]);
+	// look for addres in mac filter
+	int result = 0;
+	for(int i=0;i<ptrDeviceSettings->macFilterListLen;i++){
+	  result += eth_addr_cmp(&((ptrDeviceSettings->macFilter[i]).macaddr),adr);
+	  DebugMsg("searching in mac list (index %d) : %d\n",i, result);
+	}
+	if(result == 0) find = -1;
+    }
+    if(find != ERR_OK){
+      DebugMsg("MAC not found in white list, disconnecting..");
+      close_conn(pcb, hs);
+      return ERR_OK;
+    }
+  }
+//MAC FILTER ENDS  
   /* Initialize the structure. */
   hs->handle = NULL;
   hs->file = NULL;
@@ -1444,11 +1455,10 @@ http_accept(void *arg, struct tcp_pcb *pcb, err_t err)
   return ERR_OK;
 }
 /*-----------------------------------------------------------------------------------*/
-void
-httpd_init(void)
+void httpd_init(tDeviceSettings *ptr)
 {
   struct tcp_pcb *pcb;
-
+  ptrDeviceSettings = ptr;
   LWIP_DEBUGF(HTTPD_DEBUG, ("httpd_init\n"));
 
   pcb = tcp_new();

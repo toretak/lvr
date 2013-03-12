@@ -6,6 +6,7 @@
 #define SIMULATION_MODE
 
 #include "inc/hw_types.h"
+#include "utils/arp.h"
 
 //*****************************************************************************
 //
@@ -100,7 +101,7 @@ typedef struct channelSettings
 
 typedef struct macList
 {
-	unsigned char macaddr[8];
+	struct eth_addr macaddr;
 } tMacList;
 
 typedef struct deviceSettings 

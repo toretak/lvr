@@ -17,6 +17,7 @@
 #include "../device.h"
 #include "http_conf.h"
 #include "cgifuncs.h"
+#include "utils/arp.h"
 //******************************************************************************
 
 tDeviceSettings *ptrDeviceSettings;
@@ -27,7 +28,7 @@ void HttpdInit(tDeviceSettings *ptr) {
     ptrDeviceSettings = ptr;
     http_set_ssi_handler(SSIHandler, g_pcConfigSSITags,NUM_CONFIG_SSI_TAGS);
     http_set_cgi_handlers(g_psConfigCGIURIs, NUM_CONFIG_CGI_URIS);
-    httpd_init();
+    httpd_init(ptr);
 }
 
 //******************************************************************************
@@ -174,12 +175,12 @@ int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
                 }else{
                     for(volatile int i=0;i<ptrDeviceSettings->macFilterListLen;i++){
                             usnprintf(pcInsert+(18*i), iInsertLen, "%02X:%02X:%02X:%02X:%02X:%02X,",
-                                (ptrDeviceSettings->macFilter[i]).macaddr[0],
-                                (ptrDeviceSettings->macFilter[i]).macaddr[1],
-                                (ptrDeviceSettings->macFilter[i]).macaddr[2],
-                                (ptrDeviceSettings->macFilter[i]).macaddr[3],
-                                (ptrDeviceSettings->macFilter[i]).macaddr[4],
-                                (ptrDeviceSettings->macFilter[i]).macaddr[5]);
+                                (ptrDeviceSettings->macFilter[i]).macaddr.addr[0],
+                                (ptrDeviceSettings->macFilter[i]).macaddr.addr[1],
+                                (ptrDeviceSettings->macFilter[i]).macaddr.addr[2],
+                                (ptrDeviceSettings->macFilter[i]).macaddr.addr[3],
+                                (ptrDeviceSettings->macFilter[i]).macaddr.addr[4],
+                                (ptrDeviceSettings->macFilter[i]).macaddr.addr[5]);
 
                     }
                 }
@@ -225,7 +226,7 @@ char *MacAddCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValu
 {
     long mac1,mac2,mac3,mac4,mac5,mac6;
     char pcDecodedString[32];
-    unsigned char chn;
+    u8_t chn;
     
     mac1 = FindCGIParameter("mac1", pcParam, iNumParams);
     mac2 = FindCGIParameter("mac2", pcParam, iNumParams);
@@ -241,28 +242,28 @@ char *MacAddCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValu
         ptrDeviceSettings->macFilterListLen = MAC_LIST_SZIZE - 1;
     }
     DecodeFormString(pcValue[mac1], pcDecodedString, 32);
-    chn = (unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[0] = chn;
+    chn = (u8_t)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr.addr[0] = chn;
     
     DecodeFormString(pcValue[mac2], pcDecodedString, 32);
-    chn = (unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[1] = chn;
+    chn = (u8_t)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr.addr[1] = chn;
     
     DecodeFormString(pcValue[mac3], pcDecodedString, 32);
-    chn = (unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[2] = chn;
+    chn = (u8_t)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr.addr[2] = chn;
     
     DecodeFormString(pcValue[mac4], pcDecodedString, 32);
-    chn=(unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[3] = chn;
+    chn=(u8_t)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr.addr[3] = chn;
     
     DecodeFormString(pcValue[mac5], pcDecodedString, 32);
-    chn=(unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[4] = chn;
+    chn=(u8_t)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr.addr[4] = chn;
     
     DecodeFormString(pcValue[mac6], pcDecodedString, 32);
-    chn=(unsigned char)ustrtoul((char*)&pcDecodedString,NULL,16);
-    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr[5] = chn;
+    chn=(u8_t)ustrtoul((char*)&pcDecodedString,NULL,16);
+    (ptrDeviceSettings->macFilter[ptrDeviceSettings->macFilterListLen]).macaddr.addr[5] = chn;
     
     ptrDeviceSettings->macFilterListLen++;
     
@@ -280,12 +281,12 @@ char *MacAddCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValu
 char *ClearMacCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
 {
     for(int i=0;i<MAC_LIST_SZIZE;i++){
-        (ptrDeviceSettings->macFilter[i]).macaddr[0] = 0;
-        (ptrDeviceSettings->macFilter[i]).macaddr[1] = 0;
-        (ptrDeviceSettings->macFilter[i]).macaddr[2] = 0;
-        (ptrDeviceSettings->macFilter[i]).macaddr[3] = 0;
-        (ptrDeviceSettings->macFilter[i]).macaddr[4] = 0;
-        (ptrDeviceSettings->macFilter[i]).macaddr[5] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr.addr[0] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr.addr[1] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr.addr[2] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr.addr[3] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr.addr[4] = 0;
+        (ptrDeviceSettings->macFilter[i]).macaddr.addr[5] = 0;
     }
     ptrDeviceSettings->macFilterListLen = 0;
     return(SETTINGS_CGI_RESPONSE);

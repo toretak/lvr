@@ -76,7 +76,7 @@
 #define FLAG_SYSTICK            0
 static volatile unsigned long g_ulFlags;
 
-#define DEBUG
+#define DEBUGPRINT
 
 
 //*****************************************************************************
@@ -94,7 +94,7 @@ static volatile unsigned long g_ulFlags;
 // The error routine that is called if the driver library encounters an error.
 //
 //*****************************************************************************
-#ifdef DEBUG
+#ifdef DEBUGPRINT
 void
 __error__(char *pcFilename, unsigned long ulLine)
 {
@@ -104,7 +104,7 @@ __error__(char *pcFilename, unsigned long ulLine)
 
 void DebugInit(void)
 {
-#ifdef DEBUG
+#ifdef DEBUGPRINT
 	#define BAUD_RATE 9600
 
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
@@ -126,7 +126,7 @@ void DebugInit(void)
 
 void DebugMsg(const char* str, ...)
 {
-#ifdef DEBUG
+#ifdef DEBUGPRINT
     va_list vaArgP;
     va_start(vaArgP, str);
 	UARTvprintf(str,vaArgP);
@@ -220,9 +220,19 @@ int Settings_Default(tDeviceSettings *sett)
 	sett->gw[2]=1;
 	sett->gw[3]=1;
 	
-        sett->mfEnabled = 0;                            //disable mac filter
-        sett->setIpConfig=0;                            //unset changing IP flag
-        sett->macFilterListLen = 0;        //clear mac filter list
+	sett->setIpConfig=0;                     //unset changing IP flag
+	sett->mfEnabled = 0;			 //disable mac filter
+        sett->macFilterListLen = 0;       	 //clear mac filter list
+	/*
+	sett->mfEnabled = 1;
+        sett->macFilterListLen = 1;
+        (sett->macFilter[0]).macaddr.addr[0] = 0x00;
+	(sett->macFilter[0]).macaddr.addr[1] = 0x21;
+	(sett->macFilter[0]).macaddr.addr[2] = 0x70;
+	(sett->macFilter[0]).macaddr.addr[3] = 0xb3;
+	(sett->macFilter[0]).macaddr.addr[4] = 0xce;
+	(sett->macFilter[0]).macaddr.addr[5] = 0x8b;
+	*/
         for (int i=0;i<CHANNELS;i++){
             sett->channelSettings[i].controlReg = 0x19;//0b00011001;
             sett->channelSettings[i].frameSelReg = 0xB0;//0b10110000;
