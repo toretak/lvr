@@ -4,6 +4,7 @@
 
 #define ONE_CHANNEL
 #define SIMULATION_MODE
+#define DEBUGPRINT
 
 #include "inc/hw_types.h"
 #include "utils/arp.h"
@@ -17,8 +18,6 @@
 
 
 //*****************************************************************************
-
-#define DEBUG
 
 #define FPGA_FW_VERSION "612v01"
 #define MCU_FW_VERSION "602v02"

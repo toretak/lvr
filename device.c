@@ -49,6 +49,7 @@
 
 #include "fpga/fpga_defs.h"
 #include "net/tcp_conn.h"
+#include "net/udp_conn.h"
 //*****************************************************************************
 //
 //!
@@ -76,7 +77,6 @@
 #define FLAG_SYSTICK            0
 static volatile unsigned long g_ulFlags;
 
-#define DEBUGPRINT
 
 
 //*****************************************************************************
@@ -180,7 +180,7 @@ int Settings_Write(tDeviceSettings *sett)
       }
       crc = update_crc(crc, ptr_sett[id]);
     } 
-    
+    DebugMsg("CRC: %04x",crc);
     if(SoftEEPROMWrite(id, crc)!=0)
     {    
       DebugMsg("SoftEEPROM write failed on %d\n",id); 
@@ -188,7 +188,7 @@ int Settings_Write(tDeviceSettings *sett)
     }
     
     DebugMsg("Settings_Write OK\n");
-      
+          
     return 1;
 }
 
@@ -220,10 +220,16 @@ int Settings_Default(tDeviceSettings *sett)
 	sett->gw[2]=1;
 	sett->gw[3]=1;
 	
+	sett->reipaddr[0]=192;
+	sett->reipaddr[1]=168;
+	sett->reipaddr[2]=1;
+	sett->reipaddr[3]=150; 
+	sett->report = 3327;
+	
 	sett->setIpConfig=0;                     //unset changing IP flag
-	sett->mfEnabled = 0;			 //disable mac filter
-        sett->macFilterListLen = 0;       	 //clear mac filter list
-	/*
+	//sett->mfEnabled = 0;			 //disable mac filter
+        //sett->macFilterListLen = 0;       	 //clear mac filter list
+	
 	sett->mfEnabled = 1;
         sett->macFilterListLen = 1;
         (sett->macFilter[0]).macaddr.addr[0] = 0x00;
@@ -232,7 +238,7 @@ int Settings_Default(tDeviceSettings *sett)
 	(sett->macFilter[0]).macaddr.addr[3] = 0xb3;
 	(sett->macFilter[0]).macaddr.addr[4] = 0xce;
 	(sett->macFilter[0]).macaddr.addr[5] = 0x8b;
-	*/
+	
         for (int i=0;i<CHANNELS;i++){
             sett->channelSettings[i].controlReg = 0x19;//0b00011001;
             sett->channelSettings[i].frameSelReg = 0xB0;//0b10110000;
@@ -241,9 +247,9 @@ int Settings_Default(tDeviceSettings *sett)
         //
         //Save Default setting to Flash memory
         //
-        if(!Settings_Write(sett))
-          return 0;
-        
+        if(!Settings_Write(sett)){
+	  return 0;
+	}
         return 1;
 
 }
@@ -374,7 +380,8 @@ void Timer0IntHandler(void)
     GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, pin_status);
 
     etharp_tmr();
-    DebugMsg("Arp timer \n");
+    
+    test_send_udp();
 }
 
 void Button_init(void)
@@ -410,6 +417,10 @@ int main(void)
     // Init Ports, Irq etc.
     //
     DebugInit(); 
+    //
+    // Calculate all variant of CRC for packet checksum radio modules
+    //
+    init_crc_tab();
     
     //
     // Initialization emulation EEPROM on FLASH memory
@@ -427,27 +438,13 @@ int main(void)
     DebugMsg("\nloading device settings\n");
     if(Settings_Read(&deviceSettings) == 0)
     {
-      DebugMsg("\t\t\t\t[!!]");
       DebugMsg("\nfallback: loading defaults");
       Settings_Default(&deviceSettings);
       
-    } else {
-      DebugMsg("\t\t\t\t[OK]"); 
     }
     
-    //
-    // Set default settings if Reset button has been pressed.
-    //
-    /*
-    if(GPIOPinRead(BUTTON_IO) == 0)
-    {
-      DebugMsg("Button was push and Settings is Default\n");
-      Settings_Default(&deviceSettings);
-    }
-*/
-
         
-    DebugMsg("\nstarting ... \n");
+    DebugMsg("\nbooting ... \n");
     DebugMsg("System clock = %d Hz\n", SysCtlClockGet());
 	
   
@@ -483,8 +480,10 @@ int main(void)
     DebugMsg("[OK]\n");
 #endif    
     //initialize AFTN ethernet
-    DebugMsg("\nstarting AFTN \t\t\t\t\t[OK]\n");
+    DebugMsg("\nstarting TCP AFTN translator\t\t\t[OK]\n");
     tcpConnInit(&deviceSettings);
+    DebugMsg("\nstarting UDP AFTN translator\t\t\t[OK]\n");
+    //udpConnInit(&deviceSettings);
     
         //initialize arp table
     etharp_init();
@@ -503,6 +502,16 @@ int main(void)
     // Enable the timer
     TimerEnable(TIMER0_BASE, TIMER_A);
     
+    
+    //
+    // Set default settings if Reset button has been pressed.
+    //
+//     if(GPIOPinRead(BUTTON_IO) == 0)
+//     {
+// 	DebugMsg("Button was push and Settings is Default\n");
+// 	Settings_Default(&deviceSettings);
+//     }
+
     //
     // Enable processor interrupts.
     //
@@ -517,7 +526,7 @@ int main(void)
         //process tcp communication
 #ifdef SIMULATION_MODE
         if(tcp_output_counter <= 0){
-            char str[] = "simulation mode";
+	    char str[] = "simulation mode";
             for(int i=0;i<sizeof(str);i++){
                 tcp_output_buffer[tcp_output_counter].TCP_frame[i] = str[i];
             }

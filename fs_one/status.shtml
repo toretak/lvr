@@ -5,7 +5,7 @@
 <h2>Status</h2>
 <a href="clear.cgi" class="clear_status">Clear status</a>
 </div>
-<div class="fleft" style="width:600px">
+<div class="fleft" style="width:300px">
 <table id="status_table">
 <tr><td>Channel 1</td><td><!--#ch1state--></td>
 </table>

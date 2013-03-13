@@ -48,6 +48,8 @@
         <in>httpd.h</in>
         <in>tcp_conn.c</in>
         <in>tcp_conn.h</in>
+        <in>udp_conn.c</in>
+        <in>udp_conn.h</in>
       </df>
       <df name="utils">
         <in>arp.c</in>

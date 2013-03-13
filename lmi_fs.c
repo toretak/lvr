@@ -34,6 +34,7 @@
 #include "httpserver_raw/fs.h"
 #include "httpserver_raw/fsdata.h"
 
+#include "device.h"
 
 //*****************************************************************************
 //

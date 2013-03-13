@@ -43,11 +43,11 @@
 	document.getElementById('frmUdt4').value = defArray[18];
 	document.getElementById('frmUdpp').value = defArray[19];
 	if(defArray[20] == '0'){
-	  document.getElementById('mf_true').checked = false;
-	  document.getElementById('mf_false').checked = true;
+	  document.getElementById('mac_f_state').innerHTML = 'disabled';
+	  document.getElementById('mac_f_btn').innerHTML = 'ENABLE?';
 	} else {
-	  document.getElementById('mf_false').checked = false;
-	  document.getElementById('mf_true').checked = true;
+	  document.getElementById('mac_f_state').innerHTML = 'enabled';
+	  document.getElementById('mac_f_btn').innerHTML = 'DISABLE?';
 	}
       }
       fillMacList();
@@ -142,7 +142,6 @@
             <input type="radio" name="proto" id="proto_tcp" onclick="toggleUdp()" value="tcp" /><label for="proto_tcp">TCP</label> <input type="radio"  onclick="toggleUdp()" name="proto" id="proto_udp" value="UDP" checked/><label for="proto_udp">UDP</label><br />
             <strong>UDP destination</strong>
             <input type="text" maxlength="3" name="udt1" id="frmUdt1" value="255" style="width:30px" /> . <input type="text" value="255" maxlength="3" style="width:30px" id="frmUdt2" name="udt2" /> . <input type="text" value="255" maxlength="3" style="width:30px" id="frmUdt3" name="udt3" /> . <input style="width:30px" type="text" maxlength="3" value="0" id="frmUdt4" name="udt4" /> : <input style="width:35px" type="text" maxlength="4" value="3352"  id="frmUdpp" name="udpp" />
-            <strong>MAC filter</strong><input type="radio" name="mf" id="mf_true" value="true" /><label for="mf_true">enabled</label> <input type="radio" name="mf" id="mf_false" value="false" checked/><label for="mf_false">disabled</label><br />
             
             <br />
             <input type="submit" value="Save protocol settings" class="save" />
@@ -150,6 +149,7 @@
     </div>
     <br /><br /><br />
     <h3>MAC filter - allowed MACs</h3>
+     <p>Mac filter is <span id="mac_f_state">disabled</span>, <a href="/mac_filter.cgi"><span id="mac_f_btn">toggle</span></a></p>
     <div>
     <div id="mac_list" class="fleft">
     </div>

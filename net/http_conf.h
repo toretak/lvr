@@ -70,6 +70,7 @@ char *IpsetCGIHandler(int iIndex, int iNumParams, char *pcParam[],char *pcValue[
 char *ProtocosetCGIHandler(int iIndex, int iNumParams, char *pcParam[],char *pcValue[]);
 char *RemoteIpsetCGIHandler(int iIndex, int iNumParams, char *pcParam[],char *pcValue[]);
 char *MacAddCGIHandler(int iIndex, int iNumParams, char *pcParam[],char *pcValue[]);
+char *ToggleMacFilterCGIHandler(int iIndex, int iNumParams, char *pcParam[],char *pcValue[]);
 char *ClearMacCGIHandler(int iIndex, int iNumParams, char *pcParam[],char *pcValue[]);
 
 static const tCGI g_psConfigCGIURIs[] =
@@ -78,7 +79,8 @@ static const tCGI g_psConfigCGIURIs[] =
     { "/channelsettings.cgi", SettingsCGIHandler },
     { "/ipset.cgi", IpsetCGIHandler },         
     { "/prset.cgi", ProtocosetCGIHandler },         
-    { "/mac.cgi", MacAddCGIHandler },         
+    { "/mac.cgi", MacAddCGIHandler },              
+    { "/mac_filter.cgi", ToggleMacFilterCGIHandler },         
     { "/clearmac.cgi", ClearMacCGIHandler },         
     
 };

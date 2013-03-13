@@ -1405,7 +1405,7 @@ http_accept(void *arg, struct tcp_pcb *pcb, err_t err)
   }
 //MAC FILTER 
 //neeed to find out, if MAC filter enabled
-  if(ptrDeviceSettings->mfEnabled == 1 || 1){
+  if(ptrDeviceSettings->mfEnabled == 1){
     DebugMsg("MAC filter enabled\n");
     struct netif tnetif;
     struct eth_addr * adr;

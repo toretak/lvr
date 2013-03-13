@@ -202,6 +202,13 @@ int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
                     usnprintf(pcInsert, iInsertLen, "2013-Feb-22");
             break;
 
+	    case SSI_INDEX_ID:
+		    usnprintf(pcInsert, iInsertLen, "000001");
+	    break;
+	    
+	    case SSI_INDEX_SN:
+		    usnprintf(pcInsert, iInsertLen, "#12345");
+	    break;
         }
     }
     return(strlen(pcInsert));
@@ -276,6 +283,20 @@ char *MacAddCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValu
 }
 
 /**
+ * Toggle MAC filter state
+ */
+char *ToggleMacFilterCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
+{    
+    ptrDeviceSettings->mfEnabled = !ptrDeviceSettings->mfEnabled;
+    if(!Settings_Write(ptrDeviceSettings)) {
+	DebugMsg("Save to Flash failed!!\n"); 
+    } else {
+	DebugMsg("Setting saved to Flash memory\n");
+    }
+    return(SETTINGS_CGI_RESPONSE);
+}
+
+/**
  * Clear maclist
  */
 char *ClearMacCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
@@ -289,6 +310,11 @@ char *ClearMacCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcVa
         (ptrDeviceSettings->macFilter[i]).macaddr.addr[5] = 0;
     }
     ptrDeviceSettings->macFilterListLen = 0;
+    if(!Settings_Write(ptrDeviceSettings)) {
+        DebugMsg("Save to Flash failed!!\n"); 
+    } else {
+        DebugMsg("Setting saved to Flash memory\n");
+    }
     return(SETTINGS_CGI_RESPONSE);
 }
 
