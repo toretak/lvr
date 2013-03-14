@@ -21,7 +21,7 @@
 
 #define FPGA_FW_VERSION "612v01"
 #define MCU_FW_VERSION "602v02"
-
+#define BUILD_DATE "2013-Feb-22"
 
 //#define CPU_XTAL 8000000
 
@@ -119,6 +119,8 @@ typedef struct deviceSettings
         char mfEnabled;
         char dhcpOn;
 	short setIpConfig;
+	short device_id;
+	short serial_number;
 } tDeviceSettings;
 
 //*****************************************************************************

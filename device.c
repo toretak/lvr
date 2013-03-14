@@ -191,6 +191,24 @@ int Settings_Write(tDeviceSettings *sett)
           
     return 1;
 }
+/**
+ *  Factory defaults
+ * 
+ */
+int Settings_Factory_Sett(tDeviceSettings *sett){
+      sett->macaddr[0] = 0x11;
+      sett->macaddr[1] = 0x11;
+      sett->macaddr[2] = 0x11;
+      sett->macaddr[3] = 0x11;
+      sett->macaddr[4] = 0x11;
+      sett->macaddr[5] = 0x11;
+      sett->serial_number = 1001;
+      sett->device_id = 1;
+      if(!Settings_Write(sett)){
+	  return 0;
+      }
+      return 1;
+}
 
 //*****************************************************************************
 //
@@ -381,7 +399,6 @@ void Timer0IntHandler(void)
 
     etharp_tmr();
     
-    test_send_udp();
 }
 
 void Button_init(void)
@@ -442,7 +459,6 @@ int main(void)
       Settings_Default(&deviceSettings);
       
     }
-    
         
     DebugMsg("\nbooting ... \n");
     DebugMsg("System clock = %d Hz\n", SysCtlClockGet());
@@ -483,7 +499,7 @@ int main(void)
     DebugMsg("\nstarting TCP AFTN translator\t\t\t[OK]\n");
     tcpConnInit(&deviceSettings);
     DebugMsg("\nstarting UDP AFTN translator\t\t\t[OK]\n");
-    //udpConnInit(&deviceSettings);
+    udpConnInit(&deviceSettings);
     
         //initialize arp table
     etharp_init();
@@ -532,6 +548,8 @@ int main(void)
             }
             tcp_output_buffer[tcp_output_counter].TCP_frame_length = sizeof(str);
             tcp_output_counter = 1;
+	    
+	    udpConnTx(&str[0],(u16_t) sizeof(str));
         }
 #else
         char channel = check_for_new_message();
@@ -541,6 +559,7 @@ int main(void)
             if(tcp_output_counter >= OUTPUT_TCP_BUFFER_SIZE){
                 tcp_output_counter = 0;
             }
+            udpConnTx((tcp_output_buffer[tcp_output_counter].TCP_frame[0]),(u16_t) tcp_output_buffer[tcp_output_counter].TCP_frame_length);
         }
         if(out_flag == 1){
 	  //if(get_channel_ready(0)){

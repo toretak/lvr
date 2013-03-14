@@ -14,7 +14,7 @@
 #include "device.h"
 
 
-void udpConnTx(u8_t *data, u16_t len);
+void udpConnTx(char *data, u16_t len);
 void udpConnInit(tDeviceSettings *ptrs);
 void test_send_udp();
 //extern void zep_send_test(void);

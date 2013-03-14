@@ -199,15 +199,15 @@ int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
             break;
 
             case SSI_INDEX_DATE:
-                    usnprintf(pcInsert, iInsertLen, "2013-Feb-22");
+                    usnprintf(pcInsert, iInsertLen, BUILD_DATE);
             break;
 
 	    case SSI_INDEX_ID:
-		    usnprintf(pcInsert, iInsertLen, "000001");
+		    usnprintf(pcInsert, iInsertLen, "%06d",ptrDeviceSettings->device_id);
 	    break;
 	    
 	    case SSI_INDEX_SN:
-		    usnprintf(pcInsert, iInsertLen, "#12345");
+		    usnprintf(pcInsert, iInsertLen, "#%05d",ptrDeviceSettings->serial_number);
 	    break;
         }
     }

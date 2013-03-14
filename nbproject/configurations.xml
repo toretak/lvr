@@ -19,16 +19,6 @@
         <df name="style">
         </df>
       </df>
-      <df name="gcc">
-        <df name="fpga">
-        </df>
-        <df name="myutils">
-        </df>
-        <df name="net">
-        </df>
-        <df name="utils">
-        </df>
-      </df>
       <df name="myutils">
         <in>crc.c</in>
         <in>crc.h</in>
