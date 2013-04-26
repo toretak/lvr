@@ -554,7 +554,7 @@ int main(void)
 #else
         char channel = check_for_new_message();
         if (channel < 8) {
-            TCP_frame_load_new_message(channel, &deviceSettings.channelSettings[channel], tcp_output_buffer[tcp_output_counter].TCP_frame, &tcp_output_buffer[tcp_output_counter].TCP_frame_length);
+            TCP_frame_load_new_message(channel, &deviceSettings, tcp_output_buffer[tcp_output_counter].TCP_frame, &tcp_output_buffer[tcp_output_counter].TCP_frame_length);
             tcp_output_counter++;
             if(tcp_output_counter >= OUTPUT_TCP_BUFFER_SIZE){
                 tcp_output_counter = 0;
