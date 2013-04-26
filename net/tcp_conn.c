@@ -59,7 +59,7 @@ static err_t tcp_conn_poll(void *arg, struct tcp_pcb *pcb) {
         appState->sent_messages = message_sent_counter;
         //tcp_abort(pcb);
     }else if(pcb->state == CLOSED || pcb->state == CLOSE_WAIT || pcb->state == CLOSING){
-	close_conn(pcb, appState);
+	//close_conn(pcb, appState);
     }
 
     return ERR_OK;
@@ -138,11 +138,12 @@ tcp_conn_accept(void *arg, struct tcp_pcb *pcb, err_t err) {
        to the http_recv() function. */
 //    ((struct tcp_conn_app_state *) arg)->sent_messages = 0;
 
+    DebugMsg("New tcp client!\n");
     st = (struct tcp_conn_app_state *)mem_malloc(sizeof(struct tcp_conn_app_state));
     if (st == NULL) {
       DebugMsg("tcp_conn: Out of memory!\n");
       return ERR_MEM;
-    }
+    };
     //MAC FILTER 
   //neeed to find out, if MAC filter enabled
     if(ptrDeviceSettings->mfEnabled == 1){
@@ -163,10 +164,12 @@ tcp_conn_accept(void *arg, struct tcp_pcb *pcb, err_t err) {
 	  if(result == 0) find = -1;
       }
       if(find != ERR_OK){
-	DebugMsg("MAC not found in white list, disconnecting..");
+	DebugMsg("MAC not found in white list, disconnecting..\n");
 	close_conn(pcb, st);
 	return ERR_OK;
       }
+    }else{
+	DebugMsg("MAC filter off .. it's ok\n");
     }
   //MAC FILTER ENDS  
     st->sent_messages = 0;
