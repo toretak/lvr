@@ -60,24 +60,24 @@
 //	address creation
 #define CHANNEL_MASK	0x38
 
-void FPGA_interface_init(void);
-void FPGA_channel_init(const tDeviceSettings *sett);
-enum t_error_FPGA configure_FPGA_channel(const char channel, const tChannelSettings channel_settings);
-void send_data(char data);
-void send_address(char addr);
-char read_input(void);
-enum t_error_FPGA send_message_to_FPGA(const char channel, const char *message_array, const int message_length);
-char check_for_new_message(void);
-enum t_error_FPGA TCP_frame_load_new_message(const char channel, const tChannelSettings *channel_settings, char TCP_frame[MAX_MESSAGE_SIZE + 5], int *TCP_frame_length);
-void clear_error_flag(const char channel, const char control_reg);
-void clear_new_message_flag(const char channel, const char control_reg);
-
-
 // FPGA error type
 typedef enum
 {
   NO_ERROR, ERROR
 } t_error_FPGA;
+
+void FPGA_interface_init(void);
+void FPGA_channel_init(const tDeviceSettings *sett);
+t_error_FPGA configure_FPGA_channel(const char channel, const tChannelSettings channel_settings);
+void send_data(char data);
+void send_address(char addr);
+char read_input(void);
+t_error_FPGA send_message_to_FPGA(const char channel, const char *message_array, const int message_length);
+char check_for_new_message(void);
+t_error_FPGA TCP_frame_load_new_message(const char channel, const tDeviceSettings *sett, char TCP_frame[MAX_MESSAGE_SIZE + 5], int *TCP_frame_length);
+void clear_error_flag(const char channel, const char control_reg);
+void clear_new_message_flag(const char channel, const char control_reg);
+
 
 #endif /* FPGA_IO_H_ */
 

@@ -93,9 +93,9 @@ t_error_FPGA configure_FPGA_channel(const char channel, const tChannelSettings c
 #endif
 
 	send_address(create_address(channel, CONTROL));
-	send_data(channel_settings->controlReg & ~(CEF | CNMF)); // do not clear flags
+	send_data(channel_settings.controlReg & ~(CEF | CNMF)); // do not clear flags
 	send_address(create_address(channel, FRAME));
-	send_data(channel_settings->frameSel);
+	send_data(channel_settings.frameSelReg);
 }
 
 //******************************************************************************
@@ -230,13 +230,7 @@ char check_for_new_message(void) {
 //! \param *TCP_frame_length Length of the char array saved to TCP_frame.
 //! \return NO_ERROR if an existing channel was chosen, ERROR if a wrong channel was chosen.
 //! \note tChannelSettings are needed for New Message Flag clearing.
-t_error_FPGA TCP_frame_load_new_message(const char channel, const tChannelSettings *channel_settings, char TCP_frame[MAX_MESSAGE_SIZE + 5], int *TCP_frame_length) {
-
-#ifdef ONE_CHANNEL	
-	if ((message_length == 0) || (channel != 0)) return ERROR;
-#else
-	if ((message_length == 0) || (channel > 7)) return ERROR;
-#endif
+t_error_FPGA TCP_frame_load_new_message(const char channel,const tDeviceSettings *sett, char TCP_frame[MAX_MESSAGE_SIZE + 5], int *TCP_frame_length) {
 
 	// no frame header test
 	char c;
@@ -256,13 +250,13 @@ t_error_FPGA TCP_frame_load_new_message(const char channel, const tChannelSettin
 	}
 
 	TCP_frame[0] = 0;
-	TCP_frame[1] = EEPROM_get_adapter_ID();
+	TCP_frame[1] = sett->device_id;
 	TCP_frame[2] = channel + 1;
 	TCP_frame[3] = (char)(((*TCP_frame_length) - 5) >> 8);
 
 	TCP_frame[4] = (char)((*TCP_frame_length) - 5);
 
-  clear_new_message_flag(channel, channel_settings.controlReg);
+  clear_new_message_flag(channel, sett->channelSettings[channel].controlReg);
   
   return NO_ERROR;
 }
