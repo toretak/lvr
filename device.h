@@ -38,7 +38,10 @@
 #define BUTTON_PERIPHERAL       SYSCTL_PERIPH_GPIOF
 #define BUTTON_IO               GPIO_PORTF_BASE, GPIO_PIN_1
 
-
+//---------------------------------------------------------------
+// system flags
+#define SYSFLAG_TIM0INT         0x01
+#define SYSFLAG_PINSTAT         0X02
 
 //*****************************************************************************
 //! \name SoftEEPROM Constants
@@ -96,6 +99,7 @@ typedef struct channelSettings
 {
 	char controlReg;
 	char frameSelReg;
+	char adapterStatusReg;
 } tChannelSettings;
 
 typedef struct macList

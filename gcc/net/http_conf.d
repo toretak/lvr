@@ -42,5 +42,6 @@ gcc/net/http_conf.o: net/http_conf.c \
  /home/toretak/stellaris/stellarisware/third_party/lwip-1.3.2/src/include/netif/etharp.h \
  /home/toretak/stellaris/stellarisware/utils/ustdlib.h \
  /home/toretak/CodeSourcery/Sourcery_G++_Lite/bin/../lib/gcc/arm-none-eabi/4.4.1/include/stdarg.h \
+ net/../fpga/fpga_defs.h net/../fpga/FPGA_IO_LWIP.h \
  net/../myutils/uartstdio.h net/../device.h net/http_conf.h \
  net/cgifuncs.h utils/arp.h

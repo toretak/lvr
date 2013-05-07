@@ -89,6 +89,8 @@ static volatile unsigned long g_ulFlags;
 
     tDeviceSettings  deviceSettings;
     
+    static volatile unsigned long systemFlags; //vlajky stavu systemu
+    
 //*****************************************************************************
 //
 // The error routine that is called if the driver library encounters an error.
@@ -387,17 +389,21 @@ void Timer0IntHandler(void)
     // Clear the timer interrupt.
     TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);    
 
-    // Read the current state of the output
-    long pin_status;
-    pin_status=GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_0);
-    
-    // Toggle Bit 0
-    pin_status^=GPIO_PIN_0;
-    
-    // Write the result back into the GPIO Pin 0 Data Register
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, pin_status);
+    if (systemFlags & SYSFLAG_PINSTAT)
+    {
+        systemFlags &= ~SYSFLAG_PINSTAT;
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, 0x01);
+    }
+    else
+    {
+        systemFlags |= SYSFLAG_PINSTAT;
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_0, 0x00);
+    }
 
     etharp_tmr();
+    
+    // Interrut flag
+    systemFlags |= SYSFLAG_TIM0INT;
     
 }
 
@@ -552,6 +558,16 @@ int main(void)
 	    udpConnTx(&str[0],(u16_t) sizeof(str));
         }
 #else
+        // odesilani status paketu
+        if (systemFlags & SYSFLAG_TIM0INT)
+        {
+            TCP_frame_load_adapter_states(&deviceSettings, tcp_output_buffer[tcp_output_counter].TCP_frame, &tcp_output_buffer[tcp_output_counter].TCP_frame_length)
+            tcp_output_counter++;
+            if(tcp_output_counter >= OUTPUT_TCP_BUFFER_SIZE){
+                tcp_output_counter = 0;
+            }
+            udpConnTx((tcp_output_buffer[tcp_output_counter].TCP_frame[0]),(u16_t) tcp_output_buffer[tcp_output_counter].TCP_frame_length);
+        }
         char channel = check_for_new_message();
         if (channel < 8) {
             TCP_frame_load_new_message(channel, &deviceSettings, tcp_output_buffer[tcp_output_counter].TCP_frame, &tcp_output_buffer[tcp_output_counter].TCP_frame_length);

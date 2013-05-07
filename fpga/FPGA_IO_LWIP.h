@@ -77,7 +77,8 @@ char check_for_new_message(void);
 t_error_FPGA TCP_frame_load_new_message(const char channel, const tDeviceSettings *sett, char TCP_frame[MAX_MESSAGE_SIZE + 5], int *TCP_frame_length);
 void clear_error_flag(const char channel, const char control_reg);
 void clear_new_message_flag(const char channel, const char control_reg);
-
+void get_adapter_status(tChannelSettings *channel_settings);
+void TCP_frame_load_adapter_states(const tDeviceSettings *sett, char *TCP_frame, int *TCP_frame_length);
 
 #endif /* FPGA_IO_H_ */
 

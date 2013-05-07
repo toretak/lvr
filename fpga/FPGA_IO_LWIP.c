@@ -79,7 +79,7 @@ void FPGA_channel_init(const tDeviceSettings *sett) {
 }
 
 //******************************************************************************
-//! Configures FPGA channel settings.
+//! Configures FPGA channel.
 //! This method sends channel settings to FPGA taken from the tChannelSettings data structure.
 //! \param channel The channel to configure.
 //! \param channel_settings Channel settings that will be sent.
@@ -281,4 +281,63 @@ void clear_new_message_flag(const char channel, const char control_reg) {
 
 	// CNMF bit masks the other -> only channel and CEF settings are processed
 	send_data(control_reg | CNMF);
+}
+
+//******************************************************************************
+//! \Gets adapter status/states.
+//! \Gets adapter status from FPGA (ONE_CHANNEL version) or adapter states from all FPGA channels.
+//! \param *channel_settings An array of structures containing adapterStatusReg.
+//! \note For the ONE_CHANNEL version, *channel_settings is a pointer to a single char. For the Eight Channel version, every member's adapterStatusReg of the array of structures will be filled with the read staes. 
+void get_adapter_status(tChannelSettings *channel_settings) {
+	// get channel's adapter status
+#ifdef ONE_CHANNEL
+	// address of the status register
+	send_address(create_address(0, ADAPTER_STATUS));
+	// save read settings to structure
+	channel_settings->adapterStatusReg = read_input();
+#else
+	// address of the status register
+	volatile int i;
+	for (i = 0; i < 8; i++) {
+		send_address(create_address(i, ADAPTER_STATUS));
+		// save read settings to structure
+		channel_settings[i].adapterStatusReg = read_input();
+	}		
+#endif
+} 
+
+//****************************************************************************************************************************
+//! \Gets adapter status registers of all channels, combines them into one TCP frame.
+//! \param TCP_frame A char array, the received message will be stored to.
+//! \param Length of the char array saved to TCP_frame.
+void TCP_frame_load_adapter_states(const tDeviceSettings *sett, char *TCP_frame, int *TCP_frame_length) {
+
+	volatile int i;
+
+	// create TCP frame header
+	TCP_frame[0] = 1;
+	TCP_frame[1] = sett->device_id;
+#ifdef ONE_CHANNEL
+	TCP_frame[2] = 0x01; // channel number
+	TCP_frame[3] = 0;	// length of data (TCP_frame[5 - ...])
+	TCP_frame[4] = 1;	// length of data (TCP_frame[5 - ...])
+#else
+	TCP_frame[2] = 0xff;	// all channels in one TCP frame
+	TCP_frame[3] = 0;	// length of data (TCP_frame[5 - ...])
+	TCP_frame[4] = 8;	// length of data (TCP_frame[5 - ...])
+#endif
+
+	// get channel's adapter status
+#ifdef ONE_CHANNEL
+	// address of the RX register
+	send_address(create_address(0, ADAPTER_STATUS));
+	TCP_frame[5] = read_input();
+	*TCP_frame_length = 6;
+#else
+	for (i = 0 ; i < 8; i++) {
+		send_address(create_address(i, ADAPTER_STATUS));
+		TCP_frame[i + 5] = read_input();
+	}
+	*TCP_frame_length = 13;
+#endif
 }

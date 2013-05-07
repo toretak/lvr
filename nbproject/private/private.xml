@@ -8,4 +8,13 @@
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/C:/Users/Mikele/Documents/NetBeansProjects/lvr-master/net/http_conf.c</file>
+        <file>file:/C:/Users/Mikele/Documents/NetBeansProjects/lvr-master/net/http_conf.h</file>
+        <file>file:/C:/Users/Mikele/Documents/NetBeansProjects/lvr-master/fs_one/settings.shtml</file>
+        <file>file:/C:/Users/Mikele/Documents/NetBeansProjects/lvr-master/fs_one/index.shtml</file>
+        <file>file:/C:/Users/Mikele/Documents/NetBeansProjects/lvr-master/device.c</file>
+        <file>file:/C:/Users/Mikele/Documents/NetBeansProjects/lvr-master/device.h</file>
+        <file>file:/C:/Users/Mikele/Documents/NetBeansProjects/lvr-master/fpga/FPGA_IO_LWIP.c</file>
+    </open-files>
 </project-private>

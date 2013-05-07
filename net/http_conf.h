@@ -28,6 +28,7 @@
 #define SSI_INDEX_DATE 24
 #define SSI_INDEX_ID 25
 #define SSI_INDEX_SN 26
+#define SSI_INDEX_DEFAULTS 27
 
 static const char *g_pcConfigSSITags[] = 
 {
@@ -57,7 +58,8 @@ static const char *g_pcConfigSSITags[] =
 "fpgafwv",
 "date",
 "id",
-"sn"
+"sn",
+"defaults"
 };
 
 void HttpdInit(tDeviceSettings *ptr);

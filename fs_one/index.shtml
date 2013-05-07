@@ -13,7 +13,7 @@
     <input type="hidden" name="ch" id="ch1" value="1"/>
     <h3>Configuration</h3>
     <strong>Channel</strong> <input type="radio" name="en" id="enabled_true" value="true" checked/><label for="enabled_true">enabled</label> <input type="radio" name="en" id="enabled_false" value="false" /><label for="enabled_false">disabled</label><br />
-    <strong>Baud rate</strong> <input type="radio" name="br" value="50" id="br_50" /> <label for="br_50">50</label> <input type="radio" name="br" value="78" id="br_78" /> <label for="br_78">78</label> <input type="radio" name="br" value="110" id="br_110" /> <label for="br_110">110</label> <input type="radio" name="br" value="150" id="br_150" /> <label for="br_150">150</label> 
+    <strong>Baud rate</strong> <input type="radio" name="br" value="50" id="br_50" /> <label for="br_50">50</label> <input type="radio" name="br" value="75" id="br_75" /> <label for="br_75">75</label> <input type="radio" name="br" value="110" id="br_110" /> <label for="br_110">110</label> <input type="radio" name="br" value="150" id="br_150" /> <label for="br_150">150</label> 
     <input type="radio" name="br" value="300" id="br_300" /> <label for="br_300">300</label> <input type="radio" name="br" value="600" id="br_600" /> <label for="br_600">600</label> <input type="radio" name="br" value="1200" id="br_1200" /> <label for="br_1200">1 200</label> <input type="radio" name="br" value="2400" id="br_2400" /> <label for="br_2400">2 400</label> 
     <input type="radio" name="br" value="4800" id="br_4800" /> <label for="br_4800">4 800</label> <input type="radio" name="br" value="9600" id="br_9600" checked/> <label for="br_9600">9600</label>  <br />
     <strong>Frame settings</strong>

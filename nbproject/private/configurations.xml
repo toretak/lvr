@@ -1,11 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="84">
+<configurationDescriptor version="88">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="webka">
+      <df name="fpga">
+        <in>FPGA_IO.c</in>
+        <in>FPGA_IO.h</in>
+        <in>FPGA_IO_LWIP.c</in>
+        <in>FPGA_IO_LWIP.h</in>
+        <in>fpga_defs.h</in>
+      </df>
+      <df name="fs">
+        <df name="style">
+        </df>
+      </df>
+      <df name="fs_big">
+        <df name="style">
+        </df>
+      </df>
+      <df name="fs_one">
+        <df name="style">
+        </df>
+      </df>
+      <df name="gcc">
+        <df name="fpga">
+        </df>
+        <df name="myutils">
+        </df>
+        <df name="net">
+        </df>
+        <df name="utils">
+        </df>
+      </df>
+      <df name="myutils">
+        <in>crc.c</in>
+        <in>crc.h</in>
+        <in>packetfifo.c</in>
+        <in>packetfifo.h</in>
+        <in>uartstdio.c</in>
+        <in>uartstdio.h</in>
+      </df>
+      <df name="net">
+        <in>cgifuncs.c</in>
+        <in>cgifuncs.h</in>
+        <in>ethernetwrapper.c</in>
+        <in>ethernetwrapper.h</in>
+        <in>http_conf.c</in>
+        <in>http_conf.h</in>
+        <in>httpd.c</in>
+        <in>httpd.h</in>
+        <in>tcp_conn.c</in>
+        <in>tcp_conn.h</in>
+        <in>udp_conn.c</in>
+        <in>udp_conn.h</in>
+      </df>
+      <df name="utils">
+        <in>arp.c</in>
+        <in>arp.h</in>
+        <in>softeeprom.c</in>
+        <in>softeeprom.h</in>
+      </df>
+      <in>device.c</in>
+      <in>device.h</in>
+      <in>lmi-fsdata.h</in>
+      <in>lmi_fs.c</in>
+      <in>lwipopts.h</in>
+      <in>one-lmi-fsdata.h</in>
+      <in>startup_ccs.c</in>
+      <in>startup_gcc.c</in>
+    </df>
+  </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>3</platform>
       </toolsSet>
       <dbx_gdbdebugger version="1">
         <gdb_pathmaps>

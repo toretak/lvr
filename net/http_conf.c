@@ -13,6 +13,8 @@
 #include "lwip/inet.h"
 
 // PROJECT INCLUDES
+#include "../fpga/fpga_defs.h"
+#include "../fpga/FPGA_IO_LWIP.h"
 #include "../myutils/uartstdio.h"
 #include "../device.h"
 #include "http_conf.h"
@@ -78,12 +80,40 @@ void lwIPHostTimerHandler(void)
 int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
 {
     if(iIndex >= SSI_INDEX_CHN_STATE_LOW && iIndex <= SSI_INDEX_CHN_STATE_HIGH) {
-        //int chIndex = iIndex - SSI_INDEX_CHN_STATE_LOW;
-        //TODO read channel status
-        //if((ptrDeviceSettings->channelSettings[chIndex]).controlReg)
+        int chIndex = iIndex - SSI_INDEX_CHN_STATE_LOW;
+        // read channel status
+        // save adapter states to structure
+        get_adapter_status(ptrDeviceSettings->channelSettings);
+        // save adapter states to flash
+        if(!Settings_Write(ptrDeviceSettings)) {
+                DebugMsg("Save to Flash failed!!\n"); 
+        } else {
+                DebugMsg("Setting saved to Flash memory\n");
+        }
         
-        usnprintf(pcInsert, iInsertLen, "OK");
-        
+        switch(ptrDeviceSettings->channelSettings[chIndex].adapterStatusReg & 0xF0){
+            case 0x00:
+                usnprintf(pcInsert, iInsertLen, "CHOK"); // tx open circuit
+                break;
+            case 0x01:
+                usnprintf(pcInsert, iInsertLen, "TXOC"); // tx open circuit
+                break;
+            case 0x02:
+                usnprintf(pcInsert, iInsertLen, "TXSC"); // tx short circuit
+                break;
+            case 0x04:
+                usnprintf(pcInsert, iInsertLen, "RXOC"); // rx open circuit
+                break;
+            case 0x05:
+                usnprintf(pcInsert, iInsertLen, "TORO"); // tx open circuit, rx open circuit
+                break;
+            case 0x06:
+                usnprintf(pcInsert, iInsertLen, "TSRO"); // tx short circuit, rx open circuit
+                break;
+            default:
+                usnprintf(pcInsert, iInsertLen, "ERR");
+                break;
+        }
         
     }else{
         switch(iIndex)
@@ -209,6 +239,8 @@ int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
 	    case SSI_INDEX_SN:
 		    usnprintf(pcInsert, iInsertLen, "#%05d",ptrDeviceSettings->serial_number);
 	    break;
+            
+            //TODO: case defaults, dodelat posilani poradi znaku s udaji na webce
         }
     }
     return(strlen(pcInsert));
@@ -219,9 +251,12 @@ int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
 
 char *StatusCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
 {
-    //(ptrDeviceSettings->channelSettings[0]).controlReg[1] = 1;
-    DebugMsg("\nEntering status clear\n");
-   return(STATUS_CGI_RESPONSE);
+		
+    //TODO: Presunout do SSIHandler a vyresit zobrazovani statusu, tadz dodelat clear
+    
+		//(ptrDeviceSettings->channelSettings[0]).controlReg[1] = 1;
+		DebugMsg("\nEntering status clear\n");
+		return(STATUS_CGI_RESPONSE);
 }
 
 /*******************************************************************************
@@ -323,27 +358,176 @@ char *ClearMacCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcVa
 //http://10.10.10.2/settings.cgi?chn=ch0&rxsens=highest&panfilter=none
 char *SettingsCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
 {  
-   long chn;
+		long chn;
+		chn = FindCGIParameter("ch", pcParam, iNumParams); // chn: 0x31 - 0x38 (channel number), 0x61 (all channels))
+		if(chn == -1) return(PARAM_ERROR_RESPONSE);
    
-   chn = FindCGIParameter("ch", pcParam, iNumParams);
-   
+		char pcDecodedString[32];
+		unsigned long temp; 
+		char control_reg = 0, frame_sel_reg = 0;
 
-   if((chn == -1) )
-   		return(PARAM_ERROR_RESPONSE); 
-   
-   //------------------------------------------------
+		// fill up control register
+		// get channel enabled/disabled selection from string
+		temp = FindCGIParameter("en", pcParam, iNumParams);
+		if(temp == -1) return(PARAM_ERROR_RESPONSE);
+		DecodeFormString(pcValue[temp], pcDecodedString, 32);
+		switch (pcDecodedString[0]) {
+		case 't':
+			control_reg |= ENABLE_CHANNEL;
+			break;
+		case 'f':
+			control_reg |= RESET;
+			break;
+		default:
+			control_reg |= ENABLE_CHANNEL;
+			break;
+		}
+		
+		// get BAUD rate from string
+		temp = FindCGIParameter("br", pcParam, iNumParams);
+		if(temp == -1) return(PARAM_ERROR_RESPONSE);
+		DecodeFormString(pcValue[temp], pcDecodedString, 32);
+		switch (pcDecodedString[0]) {
+		case '1':
+			switch (pcDecodedString[1]) {
+			case '1': // 110 BAUDS
+				control_reg |= 2;
+			break;
+			case '2': // 1200 BAUDS
+				control_reg |= 6;
+			break;
+			case '5': // 150 BAUDS
+				control_reg |= 3;
+			break;
+			default: // 9600 BAUDS
+				control_reg |= 9;
+			break;
+			}
+			break;
+		case '2': // 2400 BAUDS
+			control_reg |= 7;
+			break;
+		case '3': // 300 BAUDS
+			control_reg |= 4;
+			break;
+		case '4': // 4800 BAUDS
+			control_reg |= 8;
+			break;
+		case '5': // 50 BAUDS
+			//control_reg |= 0;
+			break;
+		case '6': // 600 BAUDS
+			control_reg |= 5;
+			break;
+		case '7': // 75 BAUDS
+			control_reg |= 1;
+			break;
+		case '9': // 9600 BAUDS
+			control_reg |= 9;
+			break;
+		default: // 9600 BAUDS
+			control_reg |= 9;
+			break;
+		}
 
-   
-   DebugMsg("Web Settings: %d, %d, %d, %s \n", chn);
-   
-   //       
-   //Save setting to Flash memory   
-   //       
-   //if(!Settings_Write(ptrDeviceSettings)) 
-     DebugMsg("Save to Flash failed!!\n"); 
-   DebugMsg("Setting saved to Flash memory\n");
 
-   return(DEFAULT_CGI_RESPONSE);
+		// fill up frame selection register
+		// get data bits from string
+		temp = FindCGIParameter("db", pcParam, iNumParams);
+		if(temp == -1) return(PARAM_ERROR_RESPONSE);
+		DecodeFormString(pcValue[temp], pcDecodedString, 32);
+		// create frame_sel part
+		// choose the data length
+		switch (pcDecodedString[0]) {
+		case '5':
+			// DATA_BITS0 and DATA_BITS1 0 
+			break;
+		case '6':
+			frame_sel_reg |= DATA_BITS0;
+			break;
+		case '7':
+			frame_sel_reg |= DATA_BITS1;
+			break;
+		case '8':
+			frame_sel_reg |= (DATA_BITS0 | DATA_BITS1);
+			break;
+		default:
+			frame_sel_reg |= (DATA_BITS0 | DATA_BITS1);
+			break;
+		}
+	
+		// get stop bits from string
+		temp = FindCGIParameter("sb", pcParam, iNumParams);
+		if(temp == -1) return(PARAM_ERROR_RESPONSE);
+		DecodeFormString(pcValue[temp], pcDecodedString, 32);
+		switch (pcDecodedString[0]) {
+		case 0:
+			frame_sel_reg |= STOP_BITS0;
+			break;
+		case 1:
+			frame_sel_reg |= STOP_BITS1;
+			break;
+		case 2:
+			frame_sel_reg |= (STOP_BITS0 | STOP_BITS1);
+			break;
+		default:
+			frame_sel_reg |= STOP_BITS0;
+			break;
+		}
+		
+		// get parity from string
+		temp = FindCGIParameter("db", pcParam, iNumParams);
+		if(temp == -1) return(PARAM_ERROR_RESPONSE);
+		DecodeFormString(pcValue[temp], pcDecodedString, 32);
+		switch (pcDecodedString[0]) {
+		case 0:
+			// no change, no parity
+			break;
+		case 1:
+			frame_sel_reg |= PARITY_ENABLE;
+			break;
+		case 2:
+			frame_sel_reg |= (PARITY_ENABLE | PARITY_ODD);
+			break;
+		default:
+			// no change, no parity
+			break;
+		}
+   
+#ifdef ONE_CHANNEL
+		// store settings to structure
+		ptrDeviceSettings->channelSettings[0].controlReg = control_reg;
+		ptrDeviceSettings->channelSettings[0].frameSelReg = frame_sel_reg;
+		//TODO returns t_error_FPGA
+		configure_FPGA_channel(0, ptrDeviceSettings->channelSettings[0]);
+#else		
+		// single channel setting
+		if (chn >= 0x31 && chn <= 0x38) {
+			// store settings to structure
+			ptrDeviceSettings->channelSettings[chn - 0x31].controlReg = control_reg;
+			ptrDeviceSettings->channelSettings[chn - 0x31].frameSelReg = frame_sel_reg;
+			//TODO returns t_error_FPGA
+			configure_FPGA_channel(chn - 0x31, ptrDeviceSettings->channelSettings[chn - 0x31]);
+		// set all channels
+		} else if (chn == 0x61) {
+			volatile int i;
+			for (i = 0; i < 8; i++) {
+				// store settings to structure
+				ptrDeviceSettings->channelSettings[i].controlReg = control_reg;
+				ptrDeviceSettings->channelSettings[i].frameSelReg = frame_sel_reg;
+				//TODO returns t_error_FPGA
+				configure_FPGA_channel(i, ptrDeviceSettings->channelSettings[i]);
+			}
+		}
+#endif		
+   
+		DebugMsg("Web Settings: %d, %d, %d, %s \n", chn);
+   
+		//Save setting to Flash memory   
+		if(!Settings_Write(ptrDeviceSettings)) DebugMsg("Save to Flash failed!!\n"); 
+		else DebugMsg("Setting saved to Flash memory\n");
+		
+		return(DEFAULT_CGI_RESPONSE);
 }
 
 
@@ -462,9 +646,15 @@ char *IpsetCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue
 
 char *ProtocosetCGIHandler(int iIndex, int iNumParams, char *pcParam[],char *pcValue[])
 {
-    DebugMsg("\nEntering protocol settings handler\n");
-    return(SETTINGS_CGI_RESPONSE);
+    
+    //TODO everything
+    
+		DebugMsg("\nEntering protocol settings handler\n");
+    
+		
+		return(SETTINGS_CGI_RESPONSE);
 }
+
 char *RemoteIpsetCGIHandler(int iIndex, int iNumParams, char *pcParam[],char *pcValue[])
 {/*
    long remoteip, remoteport;

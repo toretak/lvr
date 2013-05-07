@@ -1,33 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="84">
+<configurationDescriptor version="88">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <df name="webka" root=".">
+    <df root="." name="webka">
       <df name="fpga">
         <in>FPGA_IO.c</in>
         <in>FPGA_IO.h</in>
+        <in>FPGA_IO_LWIP.c</in>
+        <in>FPGA_IO_LWIP.h</in>
         <in>fpga_defs.h</in>
-      </df>
-      <df name="fs">
-        <df name="style">
-        </df>
-      </df>
-      <df name="fs_big">
-        <df name="style">
-        </df>
-      </df>
-      <df name="fs_one">
-        <df name="style">
-        </df>
-      </df>
-      <df name="gcc">
-        <df name="fpga">
-        </df>
-        <df name="myutils">
-        </df>
-        <df name="net">
-        </df>
-        <df name="utils">
-        </df>
       </df>
       <df name="myutils">
         <in>crc.c</in>
@@ -83,6 +63,8 @@
       <toolsSet>
         <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <codeAssistance>
       </codeAssistance>
@@ -98,33 +80,75 @@
         <cTool>
         </cTool>
       </item>
+      <item path="device.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="fpga/FPGA_IO.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="fpga/FPGA_IO.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="fpga/FPGA_IO_LWIP.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="fpga/FPGA_IO_LWIP.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="fpga/fpga_defs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="lmi-fsdata.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="lmi_fs.c" ex="false" tool="0" flavor2="2">
         <cTool>
         </cTool>
+      </item>
+      <item path="lwipopts.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="myutils/crc.c" ex="false" tool="0" flavor2="2">
         <cTool>
         </cTool>
       </item>
+      <item path="myutils/crc.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="myutils/packetfifo.c" ex="false" tool="0" flavor2="2">
         <cTool>
         </cTool>
+      </item>
+      <item path="myutils/packetfifo.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="myutils/uartstdio.c" ex="false" tool="0" flavor2="2">
         <cTool>
         </cTool>
       </item>
+      <item path="myutils/uartstdio.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="net/cgifuncs.c" ex="false" tool="0" flavor2="2">
         <cTool>
         </cTool>
+      </item>
+      <item path="net/cgifuncs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="net/ethernetwrapper.c" ex="false" tool="0" flavor2="2">
         <cTool>
         </cTool>
       </item>
+      <item path="net/ethernetwrapper.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="net/http_conf.c" ex="false" tool="0" flavor2="2">
         <cTool>
         </cTool>
+      </item>
+      <item path="net/http_conf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="net/httpd.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="net/httpd.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="net/tcp_conn.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="net/tcp_conn.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="net/udp_conn.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="net/udp_conn.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="one-lmi-fsdata.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="startup_ccs.c" ex="false" tool="0" flavor2="2">
         <cTool>
@@ -134,9 +158,15 @@
         <cTool>
         </cTool>
       </item>
+      <item path="utils/arp.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="utils/arp.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="utils/softeeprom.c" ex="false" tool="0" flavor2="2">
         <cTool>
         </cTool>
+      </item>
+      <item path="utils/softeeprom.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
