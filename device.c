@@ -567,6 +567,7 @@ int main(void)
                 tcp_output_counter = 0;
             }
             udpConnTx((tcp_output_buffer[tcp_output_counter].TCP_frame[0]),(u16_t) tcp_output_buffer[tcp_output_counter].TCP_frame_length);
+	    systemFlags &= ~SYSFLAG_TIM0INT;
         }
         char channel = check_for_new_message();
         if (channel < 8) {
