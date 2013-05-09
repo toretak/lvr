@@ -46,7 +46,7 @@ void udpConnTx(char *data, u16_t len) {
 /* UDP initialization ......................................................*/
 void udpConnInit(tDeviceSettings *ptrs) {
     ptrDeviceSettings = ptrs;
-    struct ip_addr *remoteIpAddr; //adresa cile
+    struct ip_addr remoteIpAddr; //adresa cile
     err_t ret;
     g_upcb = udp_new();
     if(g_upcb == NULL){
@@ -54,9 +54,9 @@ void udpConnInit(tDeviceSettings *ptrs) {
     }
     g_upcb->ttl = UDP_TTL;
     
-    IP4_ADDR(remoteIpAddr, ptrs->reipaddr[0], ptrs->reipaddr[1], ptrs->reipaddr[2], ptrs->reipaddr[3]); //vytvoreni adresy, osetri big a little endian
+    IP4_ADDR(&remoteIpAddr, ptrs->reipaddr[0], ptrs->reipaddr[1], ptrs->reipaddr[2], ptrs->reipaddr[3]); //vytvoreni adresy, osetri big a little endian
     
-    ret = udp_bind(g_upcb, remoteIpAddr, ptrs->report); // oprava pretypovani, mozna ze by tady stacilo opravit na (struct ip_addr*) ptr->reipaddr - nesmi tu byt &
+    ret = udp_bind(g_upcb, &remoteIpAddr, ptrs->report); // oprava pretypovani, mozna ze by tady stacilo opravit na (struct ip_addr*) ptr->reipaddr - nesmi tu byt &
     if(ret != ERR_OK){
 	DebugMsg("UDP bind fail\n");
     }

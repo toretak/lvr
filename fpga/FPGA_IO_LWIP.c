@@ -96,6 +96,7 @@ t_error_FPGA configure_FPGA_channel(const char channel, const tChannelSettings c
 	send_data(channel_settings.controlReg & ~(CEF | CNMF)); // do not clear flags
 	send_address(create_address(channel, FRAME));
 	send_data(channel_settings.frameSelReg);
+	return NO_ERROR;
 }
 
 //******************************************************************************
@@ -256,7 +257,7 @@ t_error_FPGA TCP_frame_load_new_message(const char channel,const tDeviceSettings
 
 	TCP_frame[4] = (char)((*TCP_frame_length) - 5);
 
-  clear_new_message_flag(channel, sett->channelSettings[channel].controlReg);
+  clear_new_message_flag(channel, sett->channelSettings[((int) channel)].controlReg);
   
   return NO_ERROR;
 }
