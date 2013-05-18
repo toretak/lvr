@@ -81,9 +81,10 @@ int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
 {
     if(iIndex >= SSI_INDEX_CHN_STATE_LOW && iIndex <= SSI_INDEX_CHN_STATE_HIGH) {
         int chIndex = iIndex - SSI_INDEX_CHN_STATE_LOW;
+#ifndef SIMULATION_MODE        
         // read channel status
         // save adapter states to structure
-        get_adapter_status(ptrDeviceSettings->channelSettings);
+        get_adapter_status(ptrDeviceSettings->channelSettings);       
         // save adapter states to flash
         if(!Settings_Write(ptrDeviceSettings)) {
                 DebugMsg("Save to Flash failed!!\n"); 
@@ -91,9 +92,9 @@ int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
                 DebugMsg("Setting saved to Flash memory\n");
         }
         
-        switch(ptrDeviceSettings->channelSettings[chIndex].adapterStatusReg & 0xF0){
+        switch(ptrDeviceSettings->channelSettings[chIndex].adapterStatusReg & 0x0F){
             case 0x00:
-                usnprintf(pcInsert, iInsertLen, "CHOK"); // tx open circuit
+                usnprintf(pcInsert, iInsertLen, "CHOK"); // channel OK
                 break;
             case 0x01:
                 usnprintf(pcInsert, iInsertLen, "TXOC"); // tx open circuit
@@ -111,10 +112,13 @@ int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
                 usnprintf(pcInsert, iInsertLen, "TSRO"); // tx short circuit, rx open circuit
                 break;
             default:
-                usnprintf(pcInsert, iInsertLen, "ERR");
+                usnprintf(pcInsert, iInsertLen, "CHER");
                 break;
         }
         
+#else
+    usnprintf(pcInsert, iInsertLen, "CHOK");
+#endif       
     }else{
         switch(iIndex)
         {
@@ -252,7 +256,7 @@ int SSIHandler(int iIndex, char *pcInsert, int iInsertLen)
 char *StatusCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
 {
 		
-    //TODO: Presunout do SSIHandler a vyresit zobrazovani statusu, tadz dodelat clear
+    //TODO: Presunout do SSIHandler a vyresit zobrazovani statusu, tady dodelat clear
     
 		//(ptrDeviceSettings->channelSettings[0]).controlReg[1] = 1;
 		DebugMsg("\nEntering status clear\n");
@@ -358,7 +362,8 @@ char *ClearMacCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcVa
 //http://10.10.10.2/settings.cgi?chn=ch0&rxsens=highest&panfilter=none
 char *SettingsCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
 {  
-		long chn;
+		DebugMsg("called SettingsCGIHandler\n"); 
+    long chn;
 		chn = FindCGIParameter("ch", pcParam, iNumParams); // chn: 0x31 - 0x38 (channel number), 0x61 (all channels))
 		if(chn == -1) return(PARAM_ERROR_RESPONSE);
    
@@ -429,7 +434,7 @@ char *SettingsCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcVa
 			control_reg |= 9;
 			break;
 		}
-
+    DebugMsg("SettingsCGIHandler: control register content received from html string (%X)\n", control_reg);
 
 		// fill up frame selection register
 		// get data bits from string
@@ -493,13 +498,17 @@ char *SettingsCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcVa
 			// no change, no parity
 			break;
 		}
+    DebugMsg("SettingsCGIHandler: frame selection register content received from html string (%X)\n", frame_sel_reg);
    
 #ifdef ONE_CHANNEL
 		// store settings to structure
 		ptrDeviceSettings->channelSettings[0].controlReg = control_reg;
 		ptrDeviceSettings->channelSettings[0].frameSelReg = frame_sel_reg;
 		//TODO returns t_error_FPGA
+#ifndef SIMULATION_MODE  
 		configure_FPGA_channel(0, ptrDeviceSettings->channelSettings[0]);
+    DebugMsg("SettingsCGIHandler: control register sent to FPGA");
+#endif
 #else		
 		// single channel setting
 		if (chn >= 0x31 && chn <= 0x38) {
@@ -516,7 +525,10 @@ char *SettingsCGIHandler(int iIndex, int iNumParams, char *pcParam[], char *pcVa
 				ptrDeviceSettings->channelSettings[i].controlReg = control_reg;
 				ptrDeviceSettings->channelSettings[i].frameSelReg = frame_sel_reg;
 				//TODO returns t_error_FPGA
-				configure_FPGA_channel(i, ptrDeviceSettings->channelSettings[i]);
+#ifndef SIMULATION_MODE				
+        configure_FPGA_channel(i, ptrDeviceSettings->channelSettings[i]);
+        DebugMsg("SettingsCGIHandler: frame selection register sent to FPGA");
+#endif
 			}
 		}
 #endif		
